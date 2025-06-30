@@ -6961,6 +6961,7 @@ __metadata:
     "@react-native-masked-view/masked-view": "npm:^0.3.2"
     "@react-native/babel-preset": "npm:0.79.3"
     "@react-native/eslint-config": "npm:0.79.3"
+    "@react-native/gradle-plugin": "npm:0.79.3"
     "@react-native/metro-config": "npm:0.79.3"
     "@react-native/typescript-config": "npm:0.79.3"
     "@react-navigation/native": "npm:^7.1.10"
