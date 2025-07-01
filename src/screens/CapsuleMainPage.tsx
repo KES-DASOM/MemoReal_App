@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function MainPage() {
+export default function CapsuleMainPage() {
 
   return (
     <View>
-      <Text>Main Screen</Text>
+      <Text>타임캡슐-메인페이지</Text>
     </View>
   );
 }

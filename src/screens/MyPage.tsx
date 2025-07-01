@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function MainPage() {
+export default function MyPage() {
 
   return (
     <View>
-      <Text>Main Screen</Text>
+      <Text>MyPage Screen</Text>
     </View>
   );
 }
