@@ -13,6 +13,7 @@ export default function CapsuleFormPage() {
 
   const [CapsuleCategory, setCapsuleCategory] = useState(1);
   // CapsuleCategory - 1 : 일반캡슐, 2 : 타임캡슐
+  //
 
    const handleDateChange = (event: any, selectedDate?: Date) => {
     if (Platform.OS === 'android') {
