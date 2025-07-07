@@ -1,131 +1,140 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    <ScrollView style={styles.container}>
+      {/* 상단 타이틀 */}
+      <Text style={styles.mainTitle}>마이페이지</Text>
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
+      {/* 헤더 */}
+      <View style={styles.header}>
+        <View style={styles.profileSection}>
+          <View style={styles.avatar} />
+          <Text style={styles.username}>고양이는고양</Text>
+          <TouchableOpacity>
+            <Text style={styles.logout}>로그아웃</Text>
+          </TouchableOpacity>
         </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+        <TouchableOpacity>
+          <Text style={styles.settings}>환경설정</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* 지갑 */}
+      <View style={styles.walletCard}>
+        <Text style={styles.walletLabel}>지갑</Text>
+        <Text style={styles.walletAmount}>$ 10,000</Text>
+        <View style={styles.walletActions}>
+          <TouchableOpacity>
+            <Text style={styles.walletActionText}>거래내역</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.walletActionText}>보내기</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-    </View>
+      </View>
+
+      {/* 그리드 */}
+      <View style={styles.grid}>
+        {[
+          { id: 1, label: '오픈일까지\nD-2' },
+          { id: 2, label: '오픈일까지\nD-2' },
+          { id: 3, label: '오픈일 2025.06.06' },
+          { id: 4, label: '오픈일까지\nD-2' },
+        ].map((item) => (
+          <View key={item.id} style={styles.gridItem}>
+            <Text style={styles.gridText}>{item.label}</Text>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    backgroundColor: '#fff',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  mainTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
   },
-  highlight: {
-    fontWeight: '700',
+  profileSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#ccc',
+    marginRight: 8,
+  },
+  username: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginRight: 8,
+  },
+  logout: {
+    fontSize: 14,
+    color: '#888',
+  },
+  settings: {
+    fontSize: 14,
+    color: '#555',
+  },
+  walletCard: {
+    backgroundColor: '#eee',
+    borderRadius: 16,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  walletLabel: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  walletAmount: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  walletActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  walletActionText: {
+    fontSize: 14,
+    color: '#555',
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  gridItem: {
+    width: '48%',
+    aspectRatio: 1,
+    backgroundColor: '#ddd',
+    borderRadius: 8,
+    justifyContent: 'flex-end',
+    padding: 8,
+    marginBottom: 12,
+  },
+  gridText: {
+    fontSize: 12,
+    color: '#111',
   },
 });
-
-export default App;
