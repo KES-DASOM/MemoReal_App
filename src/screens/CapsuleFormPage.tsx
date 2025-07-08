@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function MainPage() {
+export default function CapsuleFormPage() {
 
   return (
     <View>
-      <Text>Main Screen</Text>
+      <Text>타임캡슐-작품 등록</Text>
     </View>
   );
 }
