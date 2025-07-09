@@ -1,140 +1,55 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 export default function MyPage() {
   return (
-    <ScrollView style={styles.container}>
-      {/* 상단 타이틀 */}
-      <Text style={styles.mainTitle}>마이페이지</Text>
+    <ScrollView className="flex-1 bg-white px-5 pt-10">
+      <Text className="text-xl font-bold mb-4">마이페이지</Text>
 
       {/* 헤더 */}
-      <View style={styles.header}>
-        <View style={styles.profileSection}>
-          <View style={styles.avatar} />
-          <Text style={styles.username}>고양이는고양</Text>
+      <View className="flex-row justify-between items-center mb-5">
+        <View className="flex-row items-center">
+          <View className="w-9 h-9 rounded-full bg-gray-300 mr-2" />
+          <Text className="text-base font-medium mr-2">고양이는고양</Text>
           <TouchableOpacity>
-            <Text style={styles.logout}>로그아웃</Text>
+            <Text className="text-sm text-gray-500">로그아웃</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity>
-          <Text style={styles.settings}>환경설정</Text>
+          <Text className="text-sm text-gray-700">환경설정</Text>
         </TouchableOpacity>
       </View>
 
       {/* 지갑 */}
-      <View style={styles.walletCard}>
-        <Text style={styles.walletLabel}>지갑</Text>
-        <Text style={styles.walletAmount}>$ 10,000</Text>
-        <View style={styles.walletActions}>
+      <View className="bg-gray-200 rounded-2xl p-5 items-center mb-5">
+        <Text className="text-base mb-2">지갑</Text>
+        <Text className="text-2xl font-bold mb-4">$ 10,000</Text>
+        <View className="flex-row justify-between w-full">
           <TouchableOpacity>
-            <Text style={styles.walletActionText}>거래내역</Text>
+            <Text className="text-sm text-gray-700">거래내역</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text style={styles.walletActionText}>보내기</Text>
+            <Text className="text-sm text-gray-700">보내기</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       {/* 그리드 */}
-      <View style={styles.grid}>
+      <View className="flex-row flex-wrap justify-between">
         {[
           { id: 1, label: '오픈일까지\nD-2' },
           { id: 2, label: '오픈일까지\nD-2' },
           { id: 3, label: '오픈일 2025.06.06' },
           { id: 4, label: '오픈일까지\nD-2' },
         ].map((item) => (
-          <View key={item.id} style={styles.gridItem}>
-            <Text style={styles.gridText}>{item.label}</Text>
+          <View
+            key={item.id}
+            className="w-[48%] aspect-square bg-gray-300 rounded-lg justify-end p-2 mb-3"
+          >
+            <Text className="text-xs text-black whitespace-pre-line">{item.label}</Text>
           </View>
         ))}
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 40,
-    backgroundColor: '#fff',
-  },
-  mainTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  profileSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#ccc',
-    marginRight: 8,
-  },
-  username: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginRight: 8,
-  },
-  logout: {
-    fontSize: 14,
-    color: '#888',
-  },
-  settings: {
-    fontSize: 14,
-    color: '#555',
-  },
-  walletCard: {
-    backgroundColor: '#eee',
-    borderRadius: 16,
-    padding: 20,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  walletLabel: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  walletAmount: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  walletActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  walletActionText: {
-    fontSize: 14,
-    color: '#555',
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  gridItem: {
-    width: '48%',
-    aspectRatio: 1,
-    backgroundColor: '#ddd',
-    borderRadius: 8,
-    justifyContent: 'flex-end',
-    padding: 8,
-    marginBottom: 12,
-  },
-  gridText: {
-    fontSize: 12,
-    color: '#111',
-  },
-});
