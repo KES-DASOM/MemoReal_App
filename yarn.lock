@@ -7020,6 +7020,7 @@ __metadata:
     eslint: "npm:^8.19.0"
     jest: "npm:^29.6.3"
     nativewind: "npm:^2.0.11"
+    phosphor-react-native: "npm:^3.0.0"
     postcss: "npm:^8.5.4"
     prettier: "npm:2.8.8"
     react: "npm:19.0.0"
@@ -7958,6 +7959,17 @@ __metadata:
   version: 4.0.0
   resolution: "path-type@npm:4.0.0"
   checksum: 10c0/666f6973f332f27581371efaf303fd6c272cc43c2057b37aa99e3643158c7e4b2626549555d88626e99ea9e046f82f32e41bbde5f1508547e9a11b149b52387c
+  languageName: node
+  linkType: hard
+
+"phosphor-react-native@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "phosphor-react-native@npm:3.0.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-svg: "*"
+  checksum: 10c0/ddf0063a5e0b443af1039f5ac848a18b4262babc95e59c666205e8d347b495d61292d77a5d7d308515ada8630900a32d0b96fb9ad7ff2e60949f9b920985c6cd
   languageName: node
   linkType: hard
 
