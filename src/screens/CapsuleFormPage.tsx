@@ -30,46 +30,69 @@ export default function CapsuleFormPage() {
   };
 
   return (
-    <View className='flex-1 bg-white'>
-    <View className='flex-1 w-full px-4'>
-      <View className='flex items-center '>
-        <Text className='text-2xl mb-5'>작품 등록</Text>
-      </View>
+    //전체 View태그 3개로 묶여있음 View1 -> View2 -> 제목 -> View3(본문 View태그)
+    <View className='flex-1 bg-white'> 
+      <View className='flex-1 w-full'>
 
-      <View className='flex-1 items-start space-y-2'>
-        <Image source={require('../assets/images/logo.png')}
-        className='w-[78px] h-[78px]' />
-        {/* 예시 이미지 입니다 */}
-        <TextInput value={CapsuleTitle} placeholder='캡슐 이름을 작성하세요.' placeholderTextColor="black"
+        {/* 제목 View */}
+        <View className='flex items-center border-b border-gray-400 py-[16px] mb-[40px]'>
+          <Text className='text-xl'>내용 작성</Text>
+        </View>
+
+
+        {/* 본문 View */}
+        <View className='flex-1 items-start px-[20px] space-y-[10px]'>
+          {/* <Image source={require('../assets/images/logo.png')}
+          className='w-[80px] h-[80px]' /> */}
+          {/* 예시 이미지 입니다 */}
+
+        <View className="w-screen px-[20px] pb-[24px] border-b border-gray-400 self-center">
+          <View className="flex-row">
+            <View className="w-[80px] h-[80px] rounded-xl bg-gray-300 mr-[12px]" />
+            <View className="w-[80px] h-[80px] rounded-xl bg-gray-300 mr-[12px]" />
+            <View className="w-[80px] h-[80px] rounded-xl bg-gray-300" />
+          </View>
+        </View>
+
+
+        <TextInput value={CapsuleTitle} placeholder='이곳에 캡슐 이름을 작성해주세요.' placeholderTextColor="gray"
           onChangeText={setCapsuleTitle}
           multiline
           textAlign="left" 
           textAlignVertical="top"
-          className='mb-0' />
-    
-        <View className='flex-row mb-3 '>
+          className='mb-[] text-[16px] ' />
+
+        <View className="h-px bg-gray-400 w-screen self-center" />
+        
+        {/* <View className='flex-row mb-3 '>
           <Button title='일반캡슐' onPress={() => setCapsuleCategory(1)} />
           <Button title='타임캡슐' onPress={() => setCapsuleCategory(2)} />
-        </View>
-        <TextInput value={CapsuleDescribe} placeholder='캡슐 내용을 작성하세요.' placeholderTextColor="black" 
+        </View> */}
+
+
+        <TextInput value={CapsuleDescribe} placeholder='이곳에 캡슐에 보관할 글을 작성해주세요.' placeholderTextColor="gray" 
           onChangeText={setCapsuleDescribe}
           multiline
           textAlign="left" 
           textAlignVertical="top"
-          className='bg-gray-300 w-full h-[210px] mb-4 px-3' />
-        <Text className='mb-4'>캡슐 오픈 설정</Text>
+          className='text-[16px]' />
+
         <Button title='캡슐 오픈 설정' onPress={()=> setCapsuleOpenVisible(true)} />
 
 
       <Modal
           visible={CapsuleOpenVisible}
           transparent
-          animationType="none"
+          animationType="slide"
           onRequestClose={() => setCapsuleOpenVisible(false)}
         >
-          <View className="flex-1 items-center justify-center bg-black/40">
-            <View className="w-4/5 rounded-xl bg-white p-6">
-              <Text className="text-lg font-bold mb-2">캡슐 오픈 날짜</Text>
+          <View className="flex-1 items-center justify-end">
+            <View  style={{ height: '64.5%',  }} className="w-screen rounded-xl bg-white p-6 shadow-md border border-gray-400" >
+              <Text className="text-lg font-bold mb-2">캡슐 등록</Text>
+
+              <Text>{CapsuleTitle}</Text>
+
+
               <Text className="mb-4 text-gray-600">
                 {OpenAt.toLocaleDateString('ko-KR')}
               </Text>
@@ -100,7 +123,6 @@ export default function CapsuleFormPage() {
             </View>
           </View>
         </Modal>
-      <View><Button title='생성하기' /></View>
       </View>
     </View>
     </View>
