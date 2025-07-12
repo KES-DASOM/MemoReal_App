@@ -1,130 +1,224 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Modal, Pressable, View, Text, TextInput, Button, Image, Platform } from 'react-native';
+import { CaretLeft } from 'phosphor-react-native';
+import CustomButton from '../components/UI/CustomButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function CapsuleFormPage() {
   const [CapsuleOpenVisible, setCapsuleOpenVisible] = useState(false);
-  const [OpenAt, setOpenAt] = useState(new Date());
 
-  const [showPicker, setShowPicker]       = useState(false);
+  const [OpenAtDate, setOpenAtDate] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+
+  const [OpenAtTime, setOpenAtTime] = useState(new Date());
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   const [CapsuleTitle, setCapsuleTitle] = useState('');
   const [CapsuleDescribe, setCapsuleDescribe] = useState('');
-
+  const [selectedType, setSelectedType] = useState<'normal' | 'time'>('normal');
   const [CapsuleCategory, setCapsuleCategory] = useState(1);
-  // CapsuleCategory - 1 : 일반캡슐, 2 : 타임캡슐
-  //
 
-   const handleDateChange = (event: any, selectedDate?: Date) => {
+  const handleDateChange = (event: any, selectedDate?: Date) => {
     if (Platform.OS === 'android') {
-      if (event.type === 'dismissed') {      // 취소 버튼
-        setShowPicker(false);                // 🆕 달력 닫기
+      if (event.type === 'dismissed') {
+        setShowPicker(false);
         return;
       }
-      /* OK 버튼 */
-      if (selectedDate) setOpenAt(selectedDate);
-      setShowPicker(false);                  // 🆕 달력 닫기
+      if (selectedDate) setOpenAtDate(selectedDate);
+      setShowPicker(false);
     } else {
-      if (selectedDate) setOpenAt(selectedDate);
+      if (selectedDate) setOpenAtDate(selectedDate);
     }
   };
 
   return (
-    //전체 View태그 3개로 묶여있음 View1 -> View2 -> 제목 -> View3(본문 View태그)
-    <View className='flex-1 bg-white'> 
+    <View className='flex-1 bg-white'>
       <View className='flex-1 w-full'>
+        <View className='flex-row items-center justify-between px-4 border-b border-gray-400 py-[16px] mb-[40px]'>
+          <Pressable>
+            <CaretLeft size={20} color="black" weight="bold" />
+          </Pressable>
 
-        {/* 제목 View */}
-        <View className='flex items-center border-b border-gray-400 py-[16px] mb-[40px]'>
-          <Text className='text-xl'>내용 작성</Text>
+          <Text className='text-[16px]'>내용 작성</Text>
+
+          <Pressable onPress={() => setCapsuleOpenVisible(true)}>
+            <Text className="text-[14px] text-black">다음</Text>
+          </Pressable>
         </View>
 
-
-        {/* 본문 View */}
         <View className='flex-1 items-start px-[20px] space-y-[10px]'>
-          {/* <Image source={require('../assets/images/logo.png')}
-          className='w-[80px] h-[80px]' /> */}
-          {/* 예시 이미지 입니다 */}
-
-        <View className="w-screen px-[20px] pb-[24px] border-b border-gray-400 self-center">
-          <View className="flex-row">
-            <View className="w-[80px] h-[80px] rounded-xl bg-gray-300 mr-[12px]" />
-            <View className="w-[80px] h-[80px] rounded-xl bg-gray-300 mr-[12px]" />
-            <View className="w-[80px] h-[80px] rounded-xl bg-gray-300" />
-          </View>
-        </View>
-
-
-        <TextInput value={CapsuleTitle} placeholder='이곳에 캡슐 이름을 작성해주세요.' placeholderTextColor="gray"
-          onChangeText={setCapsuleTitle}
-          multiline
-          textAlign="left" 
-          textAlignVertical="top"
-          className='mb-[] text-[16px] ' />
-
-        <View className="h-px bg-gray-400 w-screen self-center" />
-        
-        {/* <View className='flex-row mb-3 '>
-          <Button title='일반캡슐' onPress={() => setCapsuleCategory(1)} />
-          <Button title='타임캡슐' onPress={() => setCapsuleCategory(2)} />
-        </View> */}
-
-
-        <TextInput value={CapsuleDescribe} placeholder='이곳에 캡슐에 보관할 글을 작성해주세요.' placeholderTextColor="gray" 
-          onChangeText={setCapsuleDescribe}
-          multiline
-          textAlign="left" 
-          textAlignVertical="top"
-          className='text-[16px]' />
-
-        <Button title='캡슐 오픈 설정' onPress={()=> setCapsuleOpenVisible(true)} />
-
-
-      <Modal
-          visible={CapsuleOpenVisible}
-          transparent
-          animationType="slide"
-          onRequestClose={() => setCapsuleOpenVisible(false)}
-        >
-          <View className="flex-1 items-center justify-end">
-            <View  style={{ height: '64.5%',  }} className="w-screen rounded-xl bg-white p-6 shadow-md border border-gray-400" >
-              <Text className="text-lg font-bold mb-2">캡슐 등록</Text>
-
-              <Text>{CapsuleTitle}</Text>
-
-
-              <Text className="mb-4 text-gray-600">
-                {OpenAt.toLocaleDateString('ko-KR')}
-              </Text>
-
-              <Pressable
-                className="bg-blue-600 rounded py-2 mb-4"
-                onPress={() => setShowPicker(true)}          
-              >
-                <Text className="text-center text-white font-semibold">
-                  날짜 설정하기
-                </Text>
-              </Pressable>
-
-              {showPicker && (                                
-                <DateTimePicker
-                  value={OpenAt}
-                  mode="date"
-                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                  onChange={handleDateChange}
-                />
-              )}
-              <Pressable
-                className="mt-2 bg-gray-200 rounded py-2"
-                onPress={() => setCapsuleOpenVisible(false)}
-              >
-                <Text className="text-center">닫기</Text>
-              </Pressable>
+          <View className="w-screen px-[20px] pb-[24px] border-b border-gray-400 self-center">
+            <View className="flex-row">
+              <View className="w-[80px] h-[80px] rounded-xl bg-gray-300 mr-[12px]" />
+              <View className="w-[80px] h-[80px] rounded-xl bg-gray-300 mr-[12px]" />
+              <View className="w-[80px] h-[80px] rounded-xl bg-gray-300" />
             </View>
           </View>
-        </Modal>
+
+          <TextInput
+            value={CapsuleTitle}
+            placeholder='이곳에 캡슐 이름을 작성해주세요.'
+            placeholderTextColor="gray"
+            onChangeText={setCapsuleTitle}
+            multiline
+            textAlign="left"
+            textAlignVertical="top"
+            className='mb-[] text-[16px]'
+          />
+
+          <View className="h-px bg-gray-400 w-screen self-center" />
+
+          <TextInput
+            multiline
+            value={CapsuleDescribe}
+            onChangeText={(text) => {
+              if (text.endsWith('\n')) {
+                const trimmed = text.replace(/\n$/, '');
+                setCapsuleDescribe(trimmed);
+                setCapsuleOpenVisible(true);
+              } else {
+                setCapsuleDescribe(text);
+              }
+            }}
+            placeholder="이곳에 캡슐에 보관할 글을 작성해주세요."
+            placeholderTextColor="gray"
+            textAlign="left"
+            textAlignVertical="top"
+            className="text-[16px]"
+          />
+
+          <Modal
+            visible={CapsuleOpenVisible}
+            transparent
+            animationType="slide"
+            onRequestClose={() => setCapsuleOpenVisible(false)}
+          >
+            <View className="flex-1 items-center justify-end">
+              <View
+                style={{ height: '60%' }}
+                className="w-screen rounded-2xl bg-white p-6 shadow-md border border-gray-400"
+              >
+                <Text className="text-lg font-bold mb-2">캡슐 등록</Text>
+
+                <View className='flex flex-col space-y-[42px]'>
+                  <Text className='text-[24px]'>{CapsuleTitle}</Text>
+
+                  <View className='flex-row items-center'>
+                    <Text className='w-[80px] text-black font-bold'>캡슐 종류</Text>
+                    <View className='flex-row space-x-[20px]'>
+                      <Pressable
+                        className="flex-row items-center space-x-1"
+                        onPress={() => setSelectedType('normal')}
+                      >
+                        <View
+                          className={`w-4 h-4 rounded-full border-2 ${
+                            selectedType === 'normal' ? 'border-purple3' : 'border-gray-400'
+                          } items-center justify-center`}
+                        >
+                          {selectedType === 'normal' && (
+                            <View className="w-2 h-2 rounded-full bg-purple3" />
+                          )}
+                        </View>
+                        <Text
+                          className={`$${
+                            selectedType === 'normal' ? 'text-purple3 font-semibold' : 'text-gray-400'
+                          }`}
+                        >
+                          일반 캡슐
+                        </Text>
+                      </Pressable>
+
+                      <Pressable
+                        className="flex-row items-center space-x-1"
+                        onPress={() => setSelectedType('time')}
+                      >
+                        <View
+                          className={`w-4 h-4 rounded-full border-2 ${
+                            selectedType === 'time' ? 'border-purple3' : 'border-gray-400'
+                          } items-center justify-center`}
+                        >
+                          {selectedType === 'time' && (
+                            <View className="w-2 h-2 rounded-full bg-purple3" />
+                          )}
+                        </View>
+                        <Text
+                          className={`$${
+                            selectedType === 'time' ? 'text-purple3 font-semibold' : 'text-gray-400'
+                          }`}
+                        >
+                          타임 캡슐
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+
+                  <View className='flex-row items-center'>
+                    <Text className='w-[80px] text-black font-bold'>위치</Text>
+                    <Text className='text-gray-400'>지도에서 찾기</Text>
+                  </View>
+
+                  <View className='flex-row items-center space-x-4'>
+                    <Text className='w-[65px] text-black font-bold'>오픈일</Text>
+                    <Pressable onPress={() => setShowPicker(true)}>
+                      <Text className="text-gray-600">
+                        {OpenAtDate.toLocaleDateString('ko-KR')}
+                      </Text>
+                    </Pressable>
+                    <Pressable onPress={() => setShowTimePicker(true)}>
+                      <Text className="text-gray-600">
+                        {OpenAtTime.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </Text>
+                    </Pressable>
+                  </View>
+
+                  {showPicker && (
+                    <DateTimePicker
+                      value={OpenAtDate}
+                      mode="date"
+                      display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                      onChange={(event, selectedDate) => {
+                        if (Platform.OS === 'android') setShowPicker(false);
+                        if (selectedDate) setOpenAtDate(selectedDate);
+                      }}
+                    />
+                  )}
+
+                  {showTimePicker && (
+                    <DateTimePicker
+                      value={OpenAtTime}
+                      mode="time"
+                      display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                      is24Hour={true}
+                      onChange={(event, selectedTime) => {
+                        if (Platform.OS === 'android') setShowTimePicker(false);
+                        if (selectedTime) setOpenAtTime(selectedTime);
+                      }}
+                    />
+                  )}
+
+                  <View className='flex-row justify-between px-6 w-full'>
+                    <CustomButton
+                      className="w-[120px] bg-white p-2 border border-gray-300 rounded-full"
+                      textClassName="font-bold color-black text-[10px]"
+                      onPress={() => setCapsuleOpenVisible(false)}
+                    >
+                      취소
+                    </CustomButton>
+
+                    <CustomButton
+                      className="w-[120px] bg-purple3 p-2 rounded-full"
+                      textClassName="font-bold color-white text-[10px]"
+                      onPress={() => setCapsuleOpenVisible(false)}
+                    >
+                      업로드
+                    </CustomButton>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </View>
       </View>
-    </View>
     </View>
   );
 }
