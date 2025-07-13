@@ -1,79 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-
-const BUTTON_WIDTH = 300;
-const PREVIEW_SIZE = 200;
+import { View, Text, Image, Dimensions } from 'react-native';
 
 const CapsuleMainPage = () => {
+  const screenHeight = Dimensions.get('window').height;
+  const topOffset = screenHeight * 0.05;
+
   return (
-    <View style={styles.container}>
-      <View style={styles.headerWrapper}>
-        <Text style={styles.title}>
-          세상에 단 하나뿐인{'\n'}타임캡슐을 만들어보세요
-        </Text>
-        <Text style={styles.subtitle}>
-          IPFS 기술로 안전하게 보관되어{'\n'}수십 년이 지나도 그대로 간직될 수 있어요
-        </Text>
+    // 전체 화면 컨테이너
+    <View className="flex-1 bg-white px-6">
+
+      <View className="flex-1 justify-center items-center">
+        <View className="w-full max-w-[400px]" style={{ marginTop: topOffset }}>
+
+
+          <View className="gap-2 mb-8">
+            <Text className="text-2xl font-bold text-black leading-tight">
+              세상에 단 하나뿐인{'\n'}타임캡슐을 만들어보세요
+            </Text>
+            <Text className="text-base text-gray-50git fetch
+0 leading-relaxed">
+              IPFS 기술로 안전하게 보관되어{'\n'}수십 년이 지나도 그대로 간직될 수 있어요
+            </Text>
+          </View>
+
+          {/* 타임캡슐 이미지 */}
+          <View className="items-center w-full aspect-square">
+            <Image
+              source={require('../assets/images/capsule.png')}
+              className="w-full h-full"
+              resizeMode="contain"
+            />
+          </View>
+
+        </View>
       </View>
-
-      <View style={styles.previewBox} />
-
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.8}
-        accessibilityLabel="타임캡슐 시작하기"
-      >
-        <Text style={styles.buttonText}>시작하기</Text>
-      </TouchableOpacity>
     </View>
   );
 };
 
 export default CapsuleMainPage;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 24,
-    backgroundColor: 'white',
-  },
-  headerWrapper: {
-    marginTop: 200,
-    marginBottom: 48,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    lineHeight: 32,
-    marginBottom: 16,
-    color: '#000',
-  },
-  subtitle: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: 'gray',
-  },
-  previewBox: {
-    width: PREVIEW_SIZE,
-    height: PREVIEW_SIZE,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 20,
-    alignSelf: 'center',
-    marginVertical: 40,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignSelf: 'center',
-    width: BUTTON_WIDTH,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-});
