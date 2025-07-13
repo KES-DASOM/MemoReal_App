@@ -5,9 +5,9 @@ import CapsuleMainPage from '../screens/CapsuleMainPage';
 import CapsulePicturePage from '../screens/CapsulePicturePage';
 import CapsuleFormPage from '../screens/CapsuleFormPage';
 import CapsuleUploadPage from '../screens/CapsuleUploadPage';
-import { RootStackParamList } from '../store/types';
+import { CapsuleStackParamList } from '../store/types';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<CapsuleStackParamList>();
 
 export default function CapsuleStackNavigator() {
   return (

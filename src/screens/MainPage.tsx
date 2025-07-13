@@ -5,8 +5,12 @@ import { useWalletStore } from '../store/useWalletStore';
 import CustomButton from '../components/UI/CustomButton';
 import LinearGradient from 'react-native-linear-gradient';
 import TimeCapsuleSheet from '../components/layout/TimeCapsuleSheet';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../store/types';
 
-export default function MainPage() {
+type Props = NativeStackScreenProps<MainStackParamList, 'MainPage'>;
+
+const MainPage: React.FC<Props> = ({ navigation }) => {
 
   const { hasWallet, balance, createWallet } = useWalletStore();
 
@@ -68,13 +72,13 @@ export default function MainPage() {
       </View>
 
       {/* 메모리얼 소개 버튼 */}
-      <TouchableOpacity onPress={()=>console.log('메모리얼 알아보기 누름')}>
+      <TouchableOpacity onPress={() => navigation.navigate('MainInfoPage')}>
       <LinearGradient
         colors={['#E1AFD1', '#7469B6']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         className="items-center justify-center mx-7 px-1 py-1 rounded-full">
-        <View className="flex-row border border-white w-full rounded-full p-2 items-center justify-center">
+        <View className="flex-row border border-white w-full rounded-full py-2.5 items-center justify-center">
           <Text className="text-white font-semibold text-center mr-2">
             메모리얼 알아보기
           </Text>
@@ -88,4 +92,6 @@ export default function MainPage() {
 
     </ScrollView>
   );
-}
+};
+
+export default MainPage;

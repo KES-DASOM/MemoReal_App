@@ -1,8 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainPage from '../screens/MainPage';
 import MyPage from '../screens/MyPage';
 import CapsuleStackNavigator from './CapsuleStackNavigator';
+import MainStackNavigator from './MainStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +18,7 @@ export default function TabNavigator() {
       }}>
       <Tab.Screen
         name="Home"
-        component={MainPage}
+        component={MainStackNavigator}
         options={{
           tabBarLabel: 'Home',
         }}
