@@ -1,62 +1,91 @@
-  import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import CardButton from '../components/UI/CardButton';
+import React from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
+import { BellIcon, PlusIcon, CaretDoubleRightIcon } from 'phosphor-react-native';
+import { useWalletStore } from '../store/useWalletStore';
+import CustomButton from '../components/UI/CustomButton';
+import LinearGradient from 'react-native-linear-gradient';
+import TimeCapsuleSheet from '../components/layout/TimeCapsuleSheet';
 
 export default function MainPage() {
+
+  const { hasWallet, balance, createWallet } = useWalletStore();
+
+  const days = '100';
+  const digits = days.split('');
+
   return (
     <ScrollView className="flex-1 bg-white pt-3">
       {/* 상단 날짜 및 알림 */}
       <View className="flex-row justify-between items-center mb-4 mx-7">
         <View>
-          <Text className="text-sm font-semibold text-black">메모리얼에서 추억을 보관한지</Text>
-          <Text><Text className="text-purple-500 font-bold">100</Text> 일째</Text>
+          <Text className="text-sm font-semibold text-black">메모리얼에서 추억을 보관한 지</Text>
+          <View className="flex-row items-center">
+            {digits.map((digit, index) => (
+              <View
+                key={index}
+                className="w-6 h-6 mr-1 my-1 bg-white justify-center items-center shadow-md shadow-black/100"
+              >
+                <Text className="text-[#60227C] font-bold">{digit}</Text>
+              </View>
+            ))}
+            <Text className="ml-1 text-sm font-semibold text-black">일 째</Text>
+          </View>
         </View>
-        <Image
-            source={require('../assets/images/alarm-bell.png')}
-            className="w-[16px] h-[20px]"
-        />
+        <TouchableOpacity onPress={()=>{console.log('Bell 누름');}} >
+          <BellIcon size={24} weight="bold" />
+        </TouchableOpacity>
       </View>
 
       {/* 잔액 카드 */}
-      <View className="bg-purple-100 py-2 items-center mb-6 px-7">
-        <View className="bg-white rounded-2xl shadow-xl py-5 w-full items-center border">
-          <Image
-              source={require('../assets/images/icon-in-card.png')}
-              className="w-[16px] h-[20px]"
-          />
-
-          <Text className="text-2xl font-bold text-black mb-4">
-            $32,915.18
-          </Text>
-
-          <View className="flex-row space-x-3">
-            <CardButton text="보내기" onPress={() => console.log('보내기')} />
-            <View className="w-1" />
-            <CardButton text="거래내역" onPress={() => console.log('거래내역')} />
-          </View>
+      <View className="bg-white h-[180px] items-center justify-center mb-6 shadow-lg shadow-black/100">
+        {!hasWallet ? (
+        <View className="px-6 py-3 rounded-lg">
+          <TouchableOpacity className="flex-row items-center justify-center" onPress={createWallet}>
+            <View className="bg-white flex items-center justify-center mr-2 h-10 w-10 rounded-full shadow-md shadow-black/100">
+              <PlusIcon size={16} weight="bold" />
+            </View>
+            <Text className="text-[#5E5E5E] font-bold text-[20px]">새 지갑 생성하기</Text>
+          </TouchableOpacity>
         </View>
+      ) : (
+        <View className="items-center justify-center bg-white rounded-3xl w-[84%] h-[85%] shadow-md shadow-black/100">
+          <View className="w-full px-4 mb-2">
+            <Image
+              source={require('../assets/images/logo-icon.png')}
+              className="w-[18px] h-[23px]"
+            />
+          </View>
+          <Text className="text-2xl font-bold text-black mb-2">${balance}</Text>
+          <CustomButton
+            className="bg-[#60227C] py-[10px] px-[40px] rounded-full mb-2"
+            textClassName="color-white text-[16px]"
+            onPress={()=>{console.log('거래내역 누름');}}
+            >
+            거래내역
+          </CustomButton>
+        </View>
+      )}
       </View>
 
       {/* 메모리얼 소개 버튼 */}
-      <TouchableOpacity className="bg-purple-600 p-4 rounded-full items-center mb-[120px] mx-7">
-        <Text className="text-white font-bold">메모리얼 알아보기</Text>
+      <TouchableOpacity onPress={()=>console.log('메모리얼 알아보기 누름')}>
+      <LinearGradient
+        colors={['#E1AFD1', '#7469B6']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        className="items-center justify-center mx-7 px-1 py-1 rounded-full">
+        <View className="flex-row border border-white w-full rounded-full p-2 items-center justify-center">
+          <Text className="text-white font-semibold text-center mr-2">
+            메모리얼 알아보기
+          </Text>
+          <CaretDoubleRightIcon size={20} color="#ffffff" weight="bold" />
+        </View>
+      </LinearGradient>
       </TouchableOpacity>
 
       {/* NFT 목록 */}
-      <Text className="text-lg font-semibold text-black mb-2 mx-7">내 NFT 목록</Text>
-      <View className="py-2 bg-purple-600">
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
-          <View className="flex-row gap-2">
-            {[1, 2, 3].map((_, i) => (
-              <Image
-                key={i}
-                source={{ uri: 'https://via.placeholder.com/100' }}
-                className="w-36 h-36 rounded-lg bg-gray-100"
-              />
-            ))}
-          </View>
-        </ScrollView>
-      </View>
+      <TimeCapsuleSheet />
+
     </ScrollView>
   );
 }
