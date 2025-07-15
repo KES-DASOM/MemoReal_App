@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useCapsuleStore } from '../../store/useCapsuleStore';
+import TimeCapsuleCard from '../UI/CapsuleBox';
 
 const TimeCapsuleSheet = () => {
   const { capsules } = useCapsuleStore();
@@ -17,18 +18,11 @@ const TimeCapsuleSheet = () => {
         data={capsules}
         keyExtractor={(item) => item.id}
         numColumns={2}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
         scrollEnabled={false}
-        className="mx-7"
+        className="mx-9"
         renderItem={({ item }) => (
-          <TouchableOpacity className="mx-[2%] w-[46%] rounded-xl h-fit shadow-md shadow-black/100 bg-white overflow-hidden mb-4">
-            <View className="rounded-t-xl bg-gray-400 h-32 mb-2" />
-
-            <View className="px-1 pb-1">
-              <Text className="text-xs text-black">오픈일</Text>
-              <Text className="text-xs font-semibold">{item.date}</Text>
-            </View>
-            <Text className="font-semibold text-sm px-1 pb-3">{item.title}</Text>
-          </TouchableOpacity>
+          <TimeCapsuleCard item={item} />
         )}
       />
     </View>
