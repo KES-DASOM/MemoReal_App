@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../store/types';
+import { CapsuleStackParamList } from '../store/types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'CapsuleIndexPage'>;
+type Props = NativeStackScreenProps<CapsuleStackParamList, 'CapsuleIndexPage'>;
 
 const CapsuleIndexPage: React.FC<Props> = ({ navigation }) => {
 
