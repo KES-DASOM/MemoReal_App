@@ -1,21 +1,32 @@
 import React, { useCallback } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import { login, getProfile } from '@react-native-seoul/kakao-login';
+import { login as kakaoLogin, getProfile } from '@react-native-seoul/kakao-login';
+import { useAuth } from '../hooks/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export default function LoginPage() {
+  const { login } = useAuth();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+
   // 카카오 로그인 함수
   const handleKakaoLogin = useCallback(async () => {
     try {
-      const token = await login();
+      const token = await kakaoLogin();
       console.log('카카오 로그인 성공:', token);
       const profile = await getProfile();
       console.log('카카오 프로필:', profile);
+      login(token.accessToken); // AuthContext에 토큰 저장 및 로그인 상태 변경
       Alert.alert('로그인 성공', '카카오 로그인에 성공했습니다.');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
     } catch (e) {
       console.log('카카오 로그인 실패:', e);
       Alert.alert('로그인 실패', '카카오 로그인에 실패했습니다.');
     }
-  }, []);
+  }, [login, navigation]);
 
   return (
     <View className="flex-1 bg-white items-center justify-center">
