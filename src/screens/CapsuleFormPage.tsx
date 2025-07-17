@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import {
   Modal,
   Pressable,
@@ -17,25 +17,55 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../../App';
+
+import { useCurrentCoords } from '../hooks/useCurrentCoords';
+import { getAddressFromCoords } from '../utils/getAdressFromCoords';
 
 export default function CapsuleFormPage() {
   const [CapsuleOpenVisible, setCapsuleOpenVisible] = useState(false);
+
   const [OpenAtDate, setOpenAtDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
+
   const [OpenAtTime, setOpenAtTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
+
   const [CapsuleTitle, setCapsuleTitle] = useState('');
   const [CapsuleDescribe, setCapsuleDescribe] = useState('');
   const [selectedType, setSelectedType] = useState<'normal' | 'time'>('normal');
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+  const { coords, isLoadingLocation, handleGetLocation } = useCurrentCoords();
+  const [address, setAddress] = useState<string | null>(null);
+  const [isFetchingAddress, setIsFetchingAddress] = useState(false);
+  const [rnCoords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  const handleGetCurrentAddress = async () => {
+    const newCoords: { latitude: number; longitude: number } | null = await handleGetLocation();
+
+    if (newCoords) {
+      setCoords(newCoords);
+      setIsFetchingAddress(true);
+      const result = await getAddressFromCoords(newCoords.latitude, newCoords.longitude);
+      setAddress(result);
+      setIsFetchingAddress(false);
+    } else {
+      console.log('좌표를 가져오지 못했습니다.');
+    }
+  };
+
   const CapsuleDate = {
     capsuleTitle: CapsuleTitle,
     capsuleDescribe: CapsuleDescribe,
-    openTime: OpenAtDate,
     selectedType: selectedType,
+    openTime: OpenAtDate,
+    coords: rnCoords,
+  };
+
+  const UploadButtonFunction = () => {
+    console.log('캡슐 데이터:', JSON.stringify(CapsuleDate));
+    navigation.navigate('CapsuleUploadPage');
   };
 
   return (
@@ -120,13 +150,21 @@ export default function CapsuleFormPage() {
                               onPress={() => setSelectedType('normal')}
                             >
                               <View
-                                className={`w-4 h-4 rounded-full border-2 ${selectedType === 'normal' ? 'border-purple3' : 'border-gray-400'} items-center justify-center`}
+                                className={`w-4 h-4 rounded-full border-2 ${
+                                  selectedType === 'normal' ? 'border-purple3' : 'border-gray-400'
+                                } items-center justify-center`}
                               >
                                 {selectedType === 'normal' && (
                                   <View className="w-2 h-2 rounded-full bg-purple3" />
                                 )}
                               </View>
-                              <Text className={`${selectedType === 'normal' ? 'text-purple3 font-semibold' : 'text-gray-400'}`}>
+                              <Text
+                                className={`${
+                                  selectedType === 'normal'
+                                    ? 'text-purple3 font-semibold'
+                                    : 'text-gray-400'
+                                }`}
+                              >
                                 일반 캡슐
                               </Text>
                             </Pressable>
@@ -136,22 +174,44 @@ export default function CapsuleFormPage() {
                               onPress={() => setSelectedType('time')}
                             >
                               <View
-                                className={`w-4 h-4 rounded-full border-2 ${selectedType === 'time' ? 'border-purple3' : 'border-gray-400'} items-center justify-center`}
+                                className={`w-4 h-4 rounded-full border-2 ${
+                                  selectedType === 'time' ? 'border-purple3' : 'border-gray-400'
+                                } items-center justify-center`}
                               >
                                 {selectedType === 'time' && (
                                   <View className="w-2 h-2 rounded-full bg-purple3" />
                                 )}
                               </View>
-                              <Text className={`${selectedType === 'time' ? 'text-purple3 font-semibold' : 'text-gray-400'}`}>
+                              <Text
+                                className={`${
+                                  selectedType === 'time'
+                                    ? 'text-purple3 font-semibold'
+                                    : 'text-gray-400'
+                                }`}
+                              >
                                 타임 캡슐
                               </Text>
                             </Pressable>
                           </View>
                         </View>
 
-                        <View className='flex-row items-center'>
-                          <Text className='w-[80px] text-black font-bold'>위치</Text>
-                          <Text className='text-gray-400'>지도에서 찾기</Text>
+                        <View>
+                          <View className="flex-row items-center">
+                            <Text className="w-[80px] text-black font-bold">위치</Text>
+
+                            {!address && (
+                              <Pressable onPress={handleGetCurrentAddress}>
+                                <Text className="text-gray-400 underline">지도에서 찾기</Text>
+                              </Pressable>
+                            )}
+                            {isFetchingAddress && (
+                            <Text className="text-sm text-gray-500">주소를 가져오는 중...</Text>
+                          )}
+
+                          {address && (
+                            <Text className="text-black font-semibold">{address}</Text>
+                          )}
+                          </View>
                         </View>
 
                         <View className="flex-row items-center space-x-4">
@@ -189,6 +249,7 @@ export default function CapsuleFormPage() {
                             }}
                           />
                         )}
+
                         {selectedType === 'time' && showTimePicker && (
                           <DateTimePicker
                             value={OpenAtTime}
@@ -214,7 +275,7 @@ export default function CapsuleFormPage() {
                           <CustomButton
                             className="w-[120px] bg-purple3 p-2 rounded-full"
                             textClassName="font-bold color-white text-[10px]"
-                            onPress={() => console.log('캡슐 데이터:', JSON.stringify(CapsuleDate))}
+                            onPress={() => UploadButtonFunction()}
                           >
                             업로드
                           </CustomButton>
