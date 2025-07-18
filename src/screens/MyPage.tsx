@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { GearIcon } from 'phosphor-react-native';
 import MypageTabButton from '../components/UI/MypageTabButton';
-import MypageCapsuleList from '../components/layout/MypageCapsuleList';
 import useMypageTabStore from '../store/useMypageTabStore';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { MypageStackParamList } from '../store/types';
+import { MyPageStackParamList } from '../store/types';
+import MypageActionSection from '../components/layout/MypageActionSection';
 
-type Props = NativeStackScreenProps<MypageStackParamList, 'MyPage'>;
+type Props = NativeStackScreenProps<MyPageStackParamList, 'MyPage'>;
 
 const createdCapsules = [
   { id: '1', date: '2023.01.15', title: '작성한 제목 첫번째 캡슐' },
@@ -29,35 +29,32 @@ const MyPage: React.FC<Props> = ({ navigation }) => {
   const { activeTab, setActiveTab } = useMypageTabStore();
 
   const renderContent = () => {
-    switch (activeTab) { //switch case ㅋㅋ
+    switch (activeTab) {
       case 'create':
         return (
-          <>
-            <MypageCapsuleList capsules={createdCapsules} headerText="제작한 타임캡슐" />
-            <TouchableOpacity className="bg-[#60227C] rounded-full py-3 mt-4 mb-4">
-              <Text className="text-white text-center text-xs">타임캡슐 만들러 가기</Text>
-            </TouchableOpacity>
-          </>
+          <MypageActionSection
+            capsules={createdCapsules}
+            headerText="제작한 타임캡슐"
+            buttonText="타임캡슐 만들러 가기"
+          />
         );
       case 'open':
         return (
-          <>
-            <MypageCapsuleList capsules={openedCapsules} headerText="열어본 타임캡슐" />
-            <TouchableOpacity className="bg-[#60227C] rounded-full py-3 mt-4 mb-4">
-              <Text className="text-white text-center text-xs">오픈 가능한 타임캡슐 열어보기</Text>
-            </TouchableOpacity>
-          </>
+          <MypageActionSection
+            capsules={openedCapsules}
+            headerText="열어본 타임캡슐"
+            buttonText="오픈 가능한 타임캡슐 열어보기"
+          />
         );
-        case 'gift':
+      case 'gift':
         return (
-          <>
-            <MypageCapsuleList capsules={giftedCapsules} headerText="선물받은 타임캡슐" />
-            <TouchableOpacity className="bg-[#60227C] rounded-full py-3 mt-4 mb-4">
-              <Text className="text-white text-center text-xs">오픈 가능한 타임캡슐 열어보기</Text>
-            </TouchableOpacity>
-          </>
-          );
-        default:
+          <MypageActionSection
+            capsules={giftedCapsules}
+            headerText="선물받은 타임캡슐"
+            buttonText="오픈 가능한 타임캡슐 열어보기"
+          />
+        );
+      default:
         return null;
     }
   };
@@ -74,7 +71,7 @@ const MyPage: React.FC<Props> = ({ navigation }) => {
             <Text className="text-xs text-[#B3B3B3]">로그아웃</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={()=>navigation.navigate('MypageSettingPage')}>
+        <TouchableOpacity onPress={()=>navigation.navigate('MyPageSettingPage')}>
           <View className="w-6 h-6 items-center justify-center">
             <GearIcon size={24} color="#5E5E5E" weight="fill" />
           </View>

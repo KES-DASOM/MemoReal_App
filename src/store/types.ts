@@ -11,7 +11,7 @@ export type MainStackParamList = {
   MainInfoPage: undefined;
 };
 
-export type MypageStackParamList ={
+export type MyPageStackParamList ={
   MyPage: undefined;
-  MypageSettingPage: undefined;
+  MyPageSettingPage: undefined;
 };
