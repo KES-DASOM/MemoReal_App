@@ -26,7 +26,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../App';
 import CustomButton from '../components/UI/CustomButton';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const COLLAPSED_Y = SCREEN_HEIGHT * 0.52;
 const EXPANDED_Y = SCREEN_HEIGHT * 0.15;
 const MAX_SELECTION = 3;
@@ -42,7 +42,6 @@ export default function CapsulePicturePage() {
 
   const translateY = useRef(new Animated.Value(COLLAPSED_Y)).current;
   const panStart = useRef(0);
-  const firstSelected = Array.from(tempSelected)[0];
 
   const requestGalleryPermission = async () => {
     const permission =
@@ -74,24 +73,6 @@ export default function CapsulePicturePage() {
 
     const uris = result.assets.map((a: Asset) => a.uri).filter(Boolean) as string[];
     setGalleryImages(prev => [...new Set([...prev, ...uris])]);
-
-    setTempSelected(prev => {
-      const merged = new Set(prev);
-      for (const uri of uris) {
-        if (merged.size >= MAX_SELECTION) break;
-        merged.add(uri);
-      }
-      return new Set(merged);
-    });
-
-    setSelectedImages(prev => {
-      const merged = [...prev];
-      for (const uri of uris) {
-        if (merged.length >= MAX_SELECTION) break;
-        if (!merged.includes(uri)) merged.push(uri);
-      }
-      return merged;
-    });
   };
 
   useEffect(() => {
@@ -122,8 +103,11 @@ export default function CapsulePicturePage() {
   };
 
   const goToFormPage = () => {
-    if (selectedImages.length > 0) {
-      navigation.navigate('CapsuleFormPage', { imageUris: selectedImages });
+    const selected = Array.from(tempSelected);
+    if (selected.length > 0) {
+      navigation.navigate('CapsuleFormPage', { imageUris: selected });
+    } else {
+      Alert.alert('이미지 미선택', '최소 1장의 이미지를 선택해 주세요.');
     }
   };
 
@@ -146,6 +130,8 @@ export default function CapsulePicturePage() {
     })
   ).current;
 
+  const combinedSelected = Array.from(tempSelected);
+
   return (
     <View className="flex-1 bg-white">
       {/* 상단 헤더 */}
@@ -154,19 +140,36 @@ export default function CapsulePicturePage() {
           <CaretLeft size={20} color="black" weight="bold" />
         </Pressable>
         <Text className="text-base font-semibold text-black">사진/영상 선택</Text>
-        <Pressable onPress={goToFormPage} disabled={!selectedImages.length}>
-          <Text className={`text-base ${selectedImages.length ? 'text-black' : 'text-gray-400'}`}>다음</Text>
+        <Pressable onPress={goToFormPage}>
+          <Text className={`text-base ${combinedSelected.length ? 'text-black' : 'text-gray-400'}`}>다음</Text>
         </Pressable>
       </View>
 
-      {/* 대표 이미지 */}
-      <View className="items-center py-2">
-        <View className="bg-gray-200 rounded-xl overflow-hidden w-[80%]" style={{ aspectRatio: 1 }}>
-          {firstSelected && (
-            <Image source={{ uri: firstSelected }} className="w-full h-full" resizeMode="cover" />
-          )}
+      {/* 대표 이미지 슬라이드 */}
+      {combinedSelected.length > 0 && (
+        <View className="items-center py-2">
+          <FlatList
+            data={combinedSelected}
+            horizontal
+            keyExtractor={(uri, idx) => `${uri}-${idx}`}
+            showsHorizontalScrollIndicator={false}
+            decelerationRate="fast"
+            snapToInterval={SCREEN_WIDTH * 0.8 + 16}
+            snapToAlignment="center"
+            contentContainerStyle={{
+              paddingHorizontal: (SCREEN_WIDTH - SCREEN_WIDTH * 0.8) / 2,
+            }}
+            renderItem={({ item }) => (
+              <View
+                className="bg-gray-200 rounded-xl overflow-hidden"
+                style={{ width: SCREEN_WIDTH * 0.8, aspectRatio: 1, marginRight: 16 }}
+              >
+                <Image source={{ uri: item }} className="w-full h-full" resizeMode="cover" />
+              </View>
+            )}
+          />
         </View>
-      </View>
+      )}
 
       {/* 바텀시트 */}
       <Animated.View
