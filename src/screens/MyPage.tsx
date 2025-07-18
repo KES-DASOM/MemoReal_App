@@ -1,73 +1,107 @@
-import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { GearIcon } from 'phosphor-react-native';
+import MypageTabButton from '../components/UI/MypageTabButton';
+import MypageCapsuleList from '../components/layout/MypageCapsuleList';
+import useMypageTabStore from '../store/useMypageTabStore';
+
+const createdCapsules = [
+  { id: '1', date: '2023.01.15', title: '작성한 제목 첫번째 캡슐' },
+  { id: '2', date: '2023.01.15', title: '작성한 제목 두번째 캡슐' },
+  { id: '3', date: '2023.01.15', title: '세번째 캡슐 긴 제목은 이렇게 됩니다' },
+];
+
+const openedCapsules = [
+  { id: '4', date: '2023.01.15', title: '열어본 캡슐 1' },
+  { id: '5', date: '2023.02.20', title: '열어본 캡슐 2' },
+];
+
+const giftedCapsules = [
+  { id: '6', date: '2023.01.15', title: '선물받은 캡슐 A' },
+];
 
 export default function MyPage() {
-  return (
-    <ScrollView className="flex-1 bg-white px-5 pt-10">
-      {/* 마이페이지 타이틀 */}
-      <Text className="text-xl font-bold mb-4">마이페이지</Text>
 
-      {/* 헤더 */}
-      <View className="flex-row items-center justify-between bg-gray-200 rounded-2xl px-4 py-3 mb-6 shadow">
-        <View className="flex-row items-center">
-          <View className="w-[25%] aspect-square shrink-0 rounded-full bg-purple1 border border-black items-center justify-center mr-3">
-            <Text className="text-lg">🐱</Text>
-          </View>
-          <View className="flex-row items-center space-x-2">
-            <Text className="text-base font-medium">할일외면하기</Text>
-            <TouchableOpacity>
-              <Text className="text-xs text-gray-400">로그아웃</Text>
+  const { activeTab, setActiveTab } = useMypageTabStore();
+
+  const renderContent = () => {
+    switch (activeTab) { //switch case ㅋㅋ
+      case 'create':
+        return (
+          <>
+            <MypageCapsuleList capsules={createdCapsules} headerText="제작한 타임캡슐" />
+            <TouchableOpacity className="bg-[#60227C] rounded-full py-3 mt-4 mb-4">
+              <Text className="text-white text-center text-xs">타임캡슐 만들러 가기</Text>
             </TouchableOpacity>
-          </View>
+          </>
+        );
+      case 'open':
+        return (
+          <>
+            <MypageCapsuleList capsules={openedCapsules} headerText="열어본 타임캡슐" />
+            <TouchableOpacity className="bg-[#60227C] rounded-full py-3 mt-4 mb-4">
+              <Text className="text-white text-center text-xs">오픈 가능한 타임캡슐 열어보기</Text>
+            </TouchableOpacity>
+          </>
+        );
+        case 'gift':
+        return (
+          <>
+            <MypageCapsuleList capsules={giftedCapsules} headerText="선물받은 타임캡슐" />
+            <TouchableOpacity className="bg-[#60227C] rounded-full py-3 mt-4 mb-4">
+              <Text className="text-white text-center text-xs">오픈 가능한 타임캡슐 열어보기</Text>
+            </TouchableOpacity>
+          </>
+          );
+        default:
+        return null;
+    }
+  };
+
+  return (
+    <ScrollView className="flex-1 bg-white">
+      <Text className="text-xl font-bold mb-4 mt-7 mx-7">마이페이지</Text>
+
+      <View className="flex-row items-center justify-between bg-white rounded-2xl shadow-md shadow-black/100 mx-7 px-4 py-2 mb-6">
+        <View className="flex-row items-center space-x-3">
+          <View className="w-16 h-16 border border-[#60227C] rounded-full bg-gray-300" />
+          <Text className="text-base font-medium">할일외면하기</Text>
+          <TouchableOpacity>
+            <Text className="text-xs text-[#B3B3B3]">로그아웃</Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity>
           <View className="w-6 h-6 items-center justify-center">
-            <Text className="text-xl text-gray-600">⚙️</Text>
+            <GearIcon size={24} color="#5E5E5E" weight="fill" />
           </View>
         </TouchableOpacity>
       </View>
 
-      {/* 지갑 */}
-     <View className="bg-gray-200 rounded-2xl p-5 mb-6 shadow items-center">
-      {/* 모래시계 이모지 */}
-      <View className="absolute -top-0 left-4">
-        <Text className="text-lg text-purple-500">⏳</Text>
+      <View className="mx-7 mb-4">
+        <Text className="text-xs font-medium">나의 타임캡슐</Text>
       </View>
-
-      <Text className="text-2xl font-bold mb-4">$32,915.18</Text>
-      <View className="flex-row space-x-3">
-        <TouchableOpacity className="bg-purple3 rounded-full px-6 py-2">
-          <Text className="text-white text-sm font-medium">보내기</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-purple3 rounded-full px-6 py-2">
-          <Text className="text-white text-sm font-medium">거래내역</Text>
-        </TouchableOpacity>
+      <View className="flex-1 bg-white mx-7">
+      <View className="flex-row justify-around items-center bg-white shadow-md shadow-black/10">
+        <MypageTabButton
+          title="제작하기"
+          isActive={activeTab === 'create'}
+          onPress={() => setActiveTab('create')}
+        />
+        <MypageTabButton
+          title="열어보기"
+          isActive={activeTab === 'open'}
+          onPress={() => setActiveTab('open')}
+        />
+        <MypageTabButton
+          title="선물하기"
+          isActive={activeTab === 'gift'}
+          onPress={() => setActiveTab('gift')}
+        />
       </View>
+      <ScrollView className="flex-1">
+        {renderContent()}
+      </ScrollView>
     </View>
-
-    );
-  }
-
-  {/* 그리드 */}
-  <View className="flex-row flex-wrap justify-between">
-    {[
-      { id: 1, label: '오픈일까지\nD-2' },
-      { id: 2, label: '오픈일까지\nD-2' },
-      { id: 3, label: '오픈일 2025.06.06' },
-      { id: 4, label: '오픈일까지\nD-2' },
-    ].map((item) => (
-      <View
-        key={item.id}
-        className="w-[48%] aspect-square bg-purple1 rounded-lg justify-end p-2 mb-3"
-      >
-        <Text
-          className="w-[80%] text-xs text-black whitespace-pre-line bg-white px-2 py-1 rounded-md"
-        >
-          {item.label}
-        </Text>
-      </View>
-    ))}
-  </View>
 
     </ScrollView>
   );
