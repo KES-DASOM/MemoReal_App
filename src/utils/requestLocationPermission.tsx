@@ -8,7 +8,6 @@ export async function requestLocationPermission(): Promise<boolean> {
   }
 
   if (Platform.OS === 'android') {
-    console.log('🔍 Android 위치 권한 요청 시작');
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -20,8 +19,6 @@ export async function requestLocationPermission(): Promise<boolean> {
           buttonPositive: '허용',
         }
       );
-
-      console.log('🔐 권한 응답 결과:', granted);
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         return true;

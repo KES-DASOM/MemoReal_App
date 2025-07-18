@@ -41,6 +41,11 @@ export default function CapsuleFormPage() {
   const [isFetchingAddress, setIsFetchingAddress] = useState(false);
   const [rnCoords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
 
+  const nextButtonFuction = () => {
+    setCapsuleOpenVisible(true);
+    handleGetCurrentAddress();
+  };
+
   const handleGetCurrentAddress = async () => {
     const newCoords: { latitude: number; longitude: number } | null = await handleGetLocation();
 
@@ -78,7 +83,7 @@ export default function CapsuleFormPage() {
 
           <Text className='text-[16px]'>내용 작성</Text>
 
-          <Pressable onPress={() => setCapsuleOpenVisible(true)}>
+          <Pressable onPress={() => nextButtonFuction()}>
             <Text className="text-[14px] text-black">다음</Text>
           </Pressable>
         </View>
@@ -200,10 +205,7 @@ export default function CapsuleFormPage() {
                             <Text className="w-[80px] text-black font-bold">위치</Text>
 
                             {!address && !isFetchingAddress && (
-                              <Pressable onPress={handleGetCurrentAddress}>
-                                <Text className="text-gray-400 underline">지도에서 찾기</Text>
-                              </Pressable>
-                            )}
+                                <Text className="text-gray-400 underline">로딩중</Text>)}
                             {isFetchingAddress && (
                             <Text className="text-sm text-gray-500">주소를 가져오는 중...</Text>
                           )}
