@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,103 +9,116 @@ import {
   Animated,
   PanResponder,
   Platform,
+  Alert,
+  Linking,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   CaretLeft,
-  CaretDown,
-  X,
   SquaresFour,
   DotsThree,
+  X,
 } from 'phosphor-react-native';
+import { launchImageLibrary, Asset } from 'react-native-image-picker';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../App';
-import CameraRoll from '@react-native-camera-roll/camera-roll';
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import CustomButton from '../components/UI/CustomButton';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const COLLAPSED_Y = SCREEN_HEIGHT * 0.52;
 const EXPANDED_Y = SCREEN_HEIGHT * 0.15;
+const MAX_SELECTION = 3;
 
 export default function CapsulePicturePage() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [tempSelected, setTempSelected] = useState<Set<string>>(new Set());
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
-  const [albums, setAlbums] = useState<{ title: string }[]>([]);
-  const [selectedAlbum, setSelectedAlbum] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const translateY = useRef(new Animated.Value(COLLAPSED_Y)).current;
   const panStart = useRef(0);
-  const lastSelected = selectedImages.at(-1);
+  const firstSelected = Array.from(tempSelected)[0];
 
-  useEffect(() => {
-    const load = async () => {
-      const permission =
-        Platform.Version >= 33
+  const requestGalleryPermission = async () => {
+    const permission =
+      Platform.OS === 'android'
+        ? Platform.Version >= 33
           ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
-          : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
-      const result = await request(permission);
-      if (result !== RESULTS.GRANTED) return;
+          : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+        : PERMISSIONS.IOS.PHOTO_LIBRARY;
 
-      const albumList = await CameraRoll.getAlbums({ assetType: 'Photos' });
-      if (!albumList.length) return;
+    const result = await request(permission);
 
-      const defaultAlbum = albumList[0].title;
-      setAlbums(albumList);
-      setSelectedAlbum(defaultAlbum);
-      await loadGalleryImages(defaultAlbum);
-    };
-    load();
-  }, []);
+    if (result === RESULTS.BLOCKED) {
+      Alert.alert('권한 필요', '사진 접근 권한이 꺼져 있어요. 설정에서 권한을 허용해주세요.', [
+        { text: '취소', style: 'cancel' },
+        { text: '설정 열기', onPress: () => Linking.openSettings() },
+      ]);
+      return false;
+    }
+
+    return result === RESULTS.GRANTED;
+  };
+
+  const openSystemGallery = async () => {
+    const hasPermission = await requestGalleryPermission();
+    if (!hasPermission) return;
+
+    const result = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 0 });
+    if (result.didCancel || !result.assets) return;
+
+    const uris = result.assets.map((a: Asset) => a.uri).filter(Boolean) as string[];
+    setGalleryImages(prev => [...new Set([...prev, ...uris])]);
+
+    setTempSelected(prev => {
+      const merged = new Set(prev);
+      for (const uri of uris) {
+        if (merged.size >= MAX_SELECTION) break;
+        merged.add(uri);
+      }
+      return new Set(merged);
+    });
+
+    setSelectedImages(prev => {
+      const merged = [...prev];
+      for (const uri of uris) {
+        if (merged.length >= MAX_SELECTION) break;
+        if (!merged.includes(uri)) merged.push(uri);
+      }
+      return merged;
+    });
+  };
 
   useEffect(() => {
-    const id = translateY.addListener(({ value }) => {
-      setIsExpanded(value <= (COLLAPSED_Y + EXPANDED_Y) / 2);
-    });
-    return () => translateY.removeListener(id);
+    openSystemGallery();
   }, []);
-
-  const loadGalleryImages = async (albumTitle: string) => {
-    try {
-      const photos = await CameraRoll.getPhotos({
-        first: 100,
-        assetType: 'Photos',
-        groupName: albumTitle,
-      });
-      const uris = photos.edges.map(edge => edge.node.image.uri);
-      const first = uris.slice(0, 1);
-      setGalleryImages(uris);
-      setTempSelected(new Set(first));
-      setSelectedImages(first);
-      setSelectedAlbum(albumTitle);
-    } catch {
-      setGalleryImages([]);
-      setTempSelected(new Set());
-      setSelectedImages([]);
-    }
-  };
 
   const toggleSelect = (uri: string) => {
     setTempSelected(prev => {
       const updated = new Set(prev);
-      updated.has(uri) ? updated.delete(uri) : updated.add(uri);
+      if (updated.has(uri)) {
+        updated.delete(uri);
+      } else {
+        if (updated.size >= MAX_SELECTION) {
+          Alert.alert('선택 제한', `이미지는 최대 ${MAX_SELECTION}장까지 선택할 수 있어요.`);
+          return prev;
+        }
+        updated.add(uri);
+      }
       return new Set(updated);
     });
   };
 
   const confirmSelection = () => {
-    setSelectedImages(Array.from(tempSelected));
-    Animated.spring(translateY, {
-      toValue: COLLAPSED_Y,
-      useNativeDriver: false,
-    }).start();
+    const finalSelection = Array.from(tempSelected);
+    setSelectedImages(finalSelection);
+    setIsExpanded(false);
+    Animated.spring(translateY, { toValue: COLLAPSED_Y, useNativeDriver: false }).start();
   };
 
   const goToFormPage = () => {
@@ -124,6 +137,7 @@ export default function CapsulePicturePage() {
       },
       onPanResponderRelease: (_, g) => {
         const shouldExpand = g.dy < -30;
+        setIsExpanded(shouldExpand);
         Animated.spring(translateY, {
           toValue: shouldExpand ? EXPANDED_Y : COLLAPSED_Y,
           useNativeDriver: false,
@@ -134,8 +148,8 @@ export default function CapsulePicturePage() {
 
   return (
     <View className="flex-1 bg-white">
-      {/* 헤더 */}
-      <View className="flex-row items-center justify-between px-4 border-b border-gray-400 py-4 mb-10">
+      {/* 상단 헤더 */}
+      <View className="flex-row items-center justify-between px-4 border-b border-gray-400 py-4 mb-4">
         <Pressable onPress={() => navigation.goBack()}>
           <CaretLeft size={20} color="black" weight="bold" />
         </Pressable>
@@ -147,9 +161,9 @@ export default function CapsulePicturePage() {
 
       {/* 대표 이미지 */}
       <View className="items-center py-2">
-        <View className="bg-gray-200 rounded-xl overflow-hidden w-[90%] aspect-[1/1]">
-          {lastSelected && (
-            <Image source={{ uri: lastSelected }} className="w-full h-full" resizeMode="cover" />
+        <View className="bg-gray-200 rounded-xl overflow-hidden w-[80%]" style={{ aspectRatio: 1 }}>
+          {firstSelected && (
+            <Image source={{ uri: firstSelected }} className="w-full h-full" resizeMode="cover" />
           )}
         </View>
       </View>
@@ -177,36 +191,18 @@ export default function CapsulePicturePage() {
           </View>
 
           {isExpanded && (
-            <View className="flex-row justify-between items-center mb-4 relative">
-              <Pressable onPress={() => translateY.setValue(COLLAPSED_Y)}>
+            <View className="flex-row justify-between items-center mb-4">
+              <Pressable onPress={() => {
+                setIsExpanded(false);
+                Animated.spring(translateY, {
+                  toValue: COLLAPSED_Y,
+                  useNativeDriver: false,
+                }).start();
+              }}>
                 <X size={24} color="#6B7280" />
               </Pressable>
 
-              <View className="flex-1 items-center relative">
-                <View className="flex-row items-center justify-center" style={{ transform: [{ translateX: 20 }] }}>
-                  <Text className="text-base font-semibold text-black">{selectedAlbum}</Text>
-                  <Pressable onPress={() => setShowDropdown(!showDropdown)}>
-                    <CaretDown size={16} color="#000" style={{ marginLeft: 6 }} />
-                  </Pressable>
-                </View>
-
-                {showDropdown && (
-                  <View className="absolute top-7 bg-white border border-gray-200 rounded-md shadow z-10 w-[150px]">
-                    {albums.map(album => (
-                      <Pressable
-                        key={album.title}
-                        onPress={() => {
-                          loadGalleryImages(album.title);
-                          setShowDropdown(false);
-                        }}
-                        className="px-4 py-2 border-b border-gray-100"
-                      >
-                        <Text className="text-gray-800 text-center">{album.title}</Text>
-                      </Pressable>
-                    ))}
-                  </View>
-                )}
-              </View>
+              <Text className="text-base font-semibold text-black">선택한 이미지</Text>
 
               <CustomButton
                 onPress={confirmSelection}
@@ -219,22 +215,21 @@ export default function CapsulePicturePage() {
             </View>
           )}
 
-          {/* 이미지 목록 */}
+          {/* 썸네일 리스트 */}
           <FlatList
             data={galleryImages}
-            numColumns={3}
             keyExtractor={(uri, idx) => `${idx}`}
+            numColumns={3}
             contentContainerStyle={{ paddingBottom: insets.bottom + 100 }}
             renderItem={({ item }) => {
               const selected = tempSelected.has(item);
               return (
-                <Pressable onPress={() => toggleSelect(item)} className="flex-1 basis-1/3 p-1">
+                <Pressable onPress={() => toggleSelect(item)} style={{ flexBasis: '33.333%', padding: 4 }}>
                   <View
-                    className={`rounded-xl overflow-hidden border-[3px] ${
-                      selected ? 'border-purple3' : 'border-transparent'
-                    } bg-gray-200 aspect-[1/1]`}
+                    className={`rounded-xl overflow-hidden border-[2px] ${selected ? 'border-purple3' : 'border-transparent'} bg-gray-200`}
+                    style={{ aspectRatio: 1 }}
                   >
-                    <Image source={{ uri: item }} className="w-full h-full" />
+                    <Image source={{ uri: item }} className="w-full h-full" resizeMode="cover" />
                   </View>
                 </Pressable>
               );
@@ -243,40 +238,41 @@ export default function CapsulePicturePage() {
         </View>
       </Animated.View>
 
-      {/* 플로팅 버튼 */}
+      {/* Floating 버튼 */}
       {!isExpanded && (
-        <View
-          className="absolute flex-row justify-between items-center left-5 right-5"
-          style={{ bottom: insets.bottom + 24 }}
-        >
+        <View className="absolute flex-row justify-between items-center left-5 right-5" style={{ bottom: insets.bottom + 24 }}>
           <Pressable
-            onPress={() =>
-              Animated.spring(translateY, {
-                toValue: EXPANDED_Y,
-                useNativeDriver: false,
-              }).start()
-            }
+            onPress={() => {
+              setIsExpanded(true);
+              Animated.spring(translateY, { toValue: EXPANDED_Y, useNativeDriver: false }).start();
+            }}
           >
-            <View className="flex-row items-center px-4 py-2 rounded-full bg-white" style={{
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.25,
-              shadowRadius: 6,
-              elevation: 6,
-            }}>
+            <View
+              className="flex-row items-center px-4 py-2 rounded-full bg-white"
+              style={{
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 6,
+                elevation: 6,
+              }}
+            >
               <SquaresFour size={20} weight="fill" color="#000" style={{ marginRight: 8 }} />
               <Text className="text-base text-gray-800">전체</Text>
             </View>
           </Pressable>
 
-          <Pressable onPress={() => loadGalleryImages(selectedAlbum)}>
-            <View className="w-12 h-12 rounded-full bg-white items-center justify-center" style={{
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.25,
-              shadowRadius: 6,
-              elevation: 6,
-            }}>
+          <Pressable onPress={openSystemGallery}>
+            <View
+              className="w-12 h-12 rounded-full bg-white items-center justify-center"
+              style={{
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 6,
+                elevation: 6,
+              }}
+            >
               <DotsThree size={24} color="#000" />
             </View>
           </Pressable>
