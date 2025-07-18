@@ -39,6 +39,7 @@ export default function CapsuleUploadPage() {
             borderRadius={8}
             indeterminate={false} // true면 로딩 스피너 모드
             animated              // 값 변할 때 부드럽게
+            color="#60227C"
             className='mb-[50px]'
             />
 
