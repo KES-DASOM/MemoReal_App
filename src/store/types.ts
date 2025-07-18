@@ -25,3 +25,8 @@ export interface NavTabIconProps {
   iconFilled: ImageSourcePropType;
   label?: string;
 }
+
+export type Coords = {
+  latitude: number;
+  longitude: number;
+};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
+import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { BellIcon, PlusIcon, CaretDoubleRightIcon } from 'phosphor-react-native';
 import { useWalletStore } from '../store/useWalletStore';
 import CustomButton from '../components/UI/CustomButton';
@@ -14,11 +14,14 @@ const MainPage: React.FC<Props> = ({ navigation }) => {
 
   const { hasWallet, balance, createWallet } = useWalletStore();
 
+  const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+  const bottomSheetTopPosition = SCREEN_HEIGHT * 0.5;
+
   const days = '100';
   const digits = days.split('');
 
   return (
-    <ScrollView className="flex-1 bg-white pt-3">
+    <View className="flex-1 bg-white pt-3">
       {/* 상단 날짜 및 알림 */}
       <View className="flex-row justify-between items-center mb-4 mx-7">
         <View>
@@ -86,11 +89,13 @@ const MainPage: React.FC<Props> = ({ navigation }) => {
         </View>
       </LinearGradient>
       </TouchableOpacity>
+      <View style={{ height: bottomSheetTopPosition }} />
 
       {/* NFT 목록 */}
-      <TimeCapsuleSheet />
-
-    </ScrollView>
+      <TimeCapsuleSheet
+        initialTop={bottomSheetTopPosition} // TimeCapsuleSheet에 시작 위치를 props로 전달합니다.
+      />
+    </View>
   );
 };
 
