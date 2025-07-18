@@ -1,4 +1,5 @@
 import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthStackNavigator from './src/navigation/AuthStackNavigator';
 import TabNavigator from './src/navigation/TabNavigator';
@@ -11,11 +12,13 @@ function RootNavigator() {
 
 function App(): React.JSX.Element {
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }
 

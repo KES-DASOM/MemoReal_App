@@ -4430,7 +4430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.173":
+"electron-to-chromium@npm:^1.5.185":
   version: 1.5.185
   resolution: "electron-to-chromium@npm:1.5.185"
   checksum: 10c0/26820527fc85f64798ec21fcd32d3607efdf4567b701da749bbd1dd407a162373bf18733d7f0b12c56ae71ece721073b45beeba82b7d2692c494fb4b5636c4a8
