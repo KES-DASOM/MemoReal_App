@@ -15,3 +15,8 @@ export type MyPageStackParamList ={
   MyPage: undefined;
   MyPageSettingPage: undefined;
 };
+
+export type Coords = {
+  latitude: number;
+  longitude: number;
+};
