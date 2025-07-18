@@ -7,9 +7,13 @@ module.exports = {
         purple1: '#AD88C6',
         purple2: '#7469B6',
         purple3: '#60227C',
-        grey1: '#F1F4F4',
-        grey2: '#F1F1F8'
-      }
+        purple4: '#E1AFD1',
+        grey1: '#F1F1F8',
+        grey2: '#b3b3b3',
+        grey3: '#5E5E5E',
+        grey4: '#E6E6E6',
+        grey5: '#9DB2CE',
+      },
     },
   },
   plugins: [],
