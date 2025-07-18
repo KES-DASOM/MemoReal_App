@@ -8,51 +8,109 @@ import {
   Dimensions,
   Animated,
   PanResponder,
+  Platform,
+  Alert,
+  Linking,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ArrowLeft, CaretDown, DotsThree, SquaresFour, X } from 'phosphor-react-native';
+import {
+  CaretLeft,
+  SquaresFour,
+  DotsThree,
+  X,
+} from 'phosphor-react-native';
+import { launchImageLibrary, Asset } from 'react-native-image-picker';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../App';
+import CustomButton from '../components/UI/CustomButton';
 
-// 화면 및 아이템 관련 상수
-const SCREEN = Dimensions.get('window');
-const COLLAPSED_Y = SCREEN.height * 0.5;
-const EXPANDED_Y = SCREEN.height * 0.15;
-const ITEM_MARGIN = 4;
-const NUM_COLUMNS = 3;
-const ITEM_WIDTH = (SCREEN.width - ITEM_MARGIN * 2 * NUM_COLUMNS - 32) / NUM_COLUMNS;
-
-// 임시 이미지 데이터
-const dummyImages = Array.from({ length: 20 }, (_, i) => ({
-  id: `${i}`,
-  uri: `https://via.placeholder.com/150?text=${i + 1}`,
-}));
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const COLLAPSED_Y = SCREEN_HEIGHT * 0.52;
+const EXPANDED_Y = SCREEN_HEIGHT * 0.15;
+const MAX_SELECTION = 3;
 
 export default function CapsulePicturePage() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  // 상태 관리
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [tempSelected, setTempSelected] = useState<Set<string>>(new Set());
-  const [selectedAlbum, setSelectedAlbum] = useState('최근 항목');
-  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // 바텀시트 위치 애니메이션
   const translateY = useRef(new Animated.Value(COLLAPSED_Y)).current;
   const panStart = useRef(0);
 
-  // 바텀시트 위치 감지해서 확장 여부 업데이트
+  const requestGalleryPermission = async () => {
+    const permission =
+      Platform.OS === 'android'
+        ? Platform.Version >= 33
+          ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+          : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+        : PERMISSIONS.IOS.PHOTO_LIBRARY;
+
+    const result = await request(permission);
+
+    if (result === RESULTS.BLOCKED) {
+      Alert.alert('권한 필요', '사진 접근 권한이 꺼져 있어요. 설정에서 권한을 허용해주세요.', [
+        { text: '취소', style: 'cancel' },
+        { text: '설정 열기', onPress: () => Linking.openSettings() },
+      ]);
+      return false;
+    }
+
+    return result === RESULTS.GRANTED;
+  };
+
+  const openSystemGallery = async () => {
+    const hasPermission = await requestGalleryPermission();
+    if (!hasPermission) return;
+
+    const result = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 0 });
+    if (result.didCancel || !result.assets) return;
+
+    const uris = result.assets.map((a: Asset) => a.uri).filter(Boolean) as string[];
+    setGalleryImages(prev => [...new Set([...prev, ...uris])]);
+  };
+
   useEffect(() => {
-    const id = translateY.addListener(({ value }) => {
-      setIsExpanded(value <= (COLLAPSED_Y + EXPANDED_Y) / 2);
-    });
-    return () => translateY.removeListener(id);
+    openSystemGallery();
   }, []);
 
-  // 바텀시트 드래그 제스처
+  const toggleSelect = (uri: string) => {
+    setTempSelected(prev => {
+      const updated = new Set(prev);
+      if (updated.has(uri)) {
+        updated.delete(uri);
+      } else {
+        if (updated.size >= MAX_SELECTION) {
+          Alert.alert('선택 제한', `이미지는 최대 ${MAX_SELECTION}장까지 선택할 수 있어요.`);
+          return prev;
+        }
+        updated.add(uri);
+      }
+      return new Set(updated);
+    });
+  };
+
+  const confirmSelection = () => {
+    const finalSelection = Array.from(tempSelected);
+    setSelectedImages(finalSelection);
+    setIsExpanded(false);
+    Animated.spring(translateY, { toValue: COLLAPSED_Y, useNativeDriver: false }).start();
+  };
+
+  const goToFormPage = () => {
+    const selected = Array.from(tempSelected);
+    if (selected.length > 0) {
+      navigation.navigate('CapsuleFormPage', { imageUris: selected });
+    } else {
+      Alert.alert('이미지 미선택', '최소 1장의 이미지를 선택해 주세요.');
+    }
+  };
+
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -63,6 +121,7 @@ export default function CapsulePicturePage() {
       },
       onPanResponderRelease: (_, g) => {
         const shouldExpand = g.dy < -30;
+        setIsExpanded(shouldExpand);
         Animated.spring(translateY, {
           toValue: shouldExpand ? EXPANDED_Y : COLLAPSED_Y,
           useNativeDriver: false,
@@ -71,40 +130,46 @@ export default function CapsulePicturePage() {
     })
   ).current;
 
-  // 이미지 선택 토글
-  const toggleSelect = (uri: string) => {
-    const updated = new Set(tempSelected);
-    updated.has(uri) ? updated.delete(uri) : updated.add(uri);
-    setTempSelected(updated);
-  };
-
-  // 선택 확정 후 바텀시트 내리기
-  const confirmSelection = () => {
-    setSelectedImages(Array.from(tempSelected));
-    Animated.spring(translateY, { toValue: COLLAPSED_Y, useNativeDriver: false }).start();
-  };
-
-  const lastSelected = selectedImages.at(-1);
+  const combinedSelected = Array.from(tempSelected);
 
   return (
     <View className="flex-1 bg-white">
-      {/* 헤더 */}
-      <View className="flex-row justify-between items-center px-6 pt-[8%] pb-3 border-b border-gray-300">
+      {/* 상단 헤더 */}
+      <View className="flex-row items-center justify-between px-4 border-b border-gray-400 py-4 mb-4">
         <Pressable onPress={() => navigation.goBack()}>
-          <ArrowLeft size={24} color="#6B7280" />
+          <CaretLeft size={20} color="black" weight="bold" />
         </Pressable>
         <Text className="text-base font-semibold text-black">사진/영상 선택</Text>
-        <Text className="text-base text-black">다음</Text>
+        <Pressable onPress={goToFormPage}>
+          <Text className={`text-base ${combinedSelected.length ? 'text-black' : 'text-gray-400'}`}>다음</Text>
+        </Pressable>
       </View>
 
-      {/* 선택 이미지 미리보기 */}
-      <View className="items-center py-5">
-        <View className="bg-gray-200 rounded-xl overflow-hidden w-[90%] aspect-square">
-          {lastSelected && (
-            <Image source={{ uri: lastSelected }} className="w-full h-full" resizeMode="cover" />
-          )}
+      {/* 대표 이미지 슬라이드 */}
+      {combinedSelected.length > 0 && (
+        <View className="items-center py-2">
+          <FlatList
+            data={combinedSelected}
+            horizontal
+            keyExtractor={(uri, idx) => `${uri}-${idx}`}
+            showsHorizontalScrollIndicator={false}
+            decelerationRate="fast"
+            snapToInterval={SCREEN_WIDTH * 0.8 + 16}
+            snapToAlignment="center"
+            contentContainerStyle={{
+              paddingHorizontal: (SCREEN_WIDTH - SCREEN_WIDTH * 0.8) / 2,
+            }}
+            renderItem={({ item }) => (
+              <View
+                className="bg-gray-200 rounded-xl overflow-hidden"
+                style={{ width: SCREEN_WIDTH * 0.8, aspectRatio: 1, marginRight: 16 }}
+              >
+                <Image source={{ uri: item }} className="w-full h-full" resizeMode="cover" />
+              </View>
+            )}
+          />
         </View>
-      </View>
+      )}
 
       {/* 바텀시트 */}
       <Animated.View
@@ -114,85 +179,60 @@ export default function CapsulePicturePage() {
           left: 0,
           right: 0,
           bottom: 0,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.1,
+          shadowRadius: 12,
+          elevation: 10,
         }}
         className="bg-white rounded-t-3xl"
         {...panResponder.panHandlers}
       >
         <View className="flex-1 px-5 pt-4">
-          {/* 핸들바 */}
           <View className="items-center mb-3">
             <View className="w-12 h-1 bg-gray-300 rounded-full" />
           </View>
 
-          {/* 상단 컨트롤 (확장 시만) */}
           {isExpanded && (
-            <View className="relative flex-row items-center justify-between mb-3">
-              <Pressable onPress={() => translateY.setValue(COLLAPSED_Y)}>
+            <View className="flex-row justify-between items-center mb-4">
+              <Pressable onPress={() => {
+                setIsExpanded(false);
+                Animated.spring(translateY, {
+                  toValue: COLLAPSED_Y,
+                  useNativeDriver: false,
+                }).start();
+              }}>
                 <X size={24} color="#6B7280" />
               </Pressable>
 
-              {/* 앨범 선택 */}
-              <View className="flex-row items-center">
-                <Text className="text-base font-semibold text-black mr-1">{selectedAlbum}</Text>
-                <Pressable onPress={() => setDropdownVisible(!dropdownVisible)}>
-                  <CaretDown size={16} color="#6B7280" />
-                </Pressable>
-              </View>
+              <Text className="text-base font-semibold text-black">선택한 이미지</Text>
 
-              {/* 선택 버튼 */}
-              <Pressable onPress={confirmSelection} disabled={tempSelected.size === 0}>
-                <View
-                  className={`px-3 py-1 rounded-full ${
-                    tempSelected.size > 0 ? 'bg-purple-100' : 'bg-gray-200'
-                  }`}
-                >
-                  <Text
-                    className={`font-medium ${
-                      tempSelected.size > 0 ? 'text-purple-700' : 'text-gray-400'
-                    }`}
-                  >
-                    선택
-                  </Text>
-                </View>
-              </Pressable>
-
-              {/* 앨범 드롭다운 */}
-              {dropdownVisible && (
-                <View className="absolute top-full mt-2 left-[25%] w-[120px] bg-white border border-gray-300 rounded-xl shadow z-50">
-                  {['최근 항목', '카메라', '다운로드'].map((name) => (
-                    <Pressable
-                      key={name}
-                      className="py-2 px-4"
-                      onPress={() => {
-                        setSelectedAlbum(name);
-                        setDropdownVisible(false);
-                      }}
-                    >
-                      <Text className="text-sm text-black">{name}</Text>
-                    </Pressable>
-                  ))}
-                </View>
-              )}
+              <CustomButton
+                onPress={confirmSelection}
+                disabled={!tempSelected.size}
+                className={`px-4 py-1 rounded-full ${tempSelected.size ? 'bg-purple3' : 'bg-gray-200'}`}
+                textClassName={`text-xs font-semibold ${tempSelected.size ? 'text-white' : 'text-gray-400'}`}
+              >
+                선택
+              </CustomButton>
             </View>
           )}
 
-          {/* 이미지 리스트 */}
+          {/* 썸네일 리스트 */}
           <FlatList
-            data={dummyImages}
-            numColumns={NUM_COLUMNS}
-            keyExtractor={(item) => item.id}
+            data={galleryImages}
+            keyExtractor={(uri, idx) => `${idx}`}
+            numColumns={3}
             contentContainerStyle={{ paddingBottom: insets.bottom + 100 }}
             renderItem={({ item }) => {
-              const selected = tempSelected.has(item.uri);
+              const selected = tempSelected.has(item);
               return (
-                <Pressable onPress={() => toggleSelect(item.uri)} style={{ margin: ITEM_MARGIN }}>
+                <Pressable onPress={() => toggleSelect(item)} style={{ flexBasis: '33.333%', padding: 4 }}>
                   <View
-                    className={`rounded-xl overflow-hidden border-[3px] ${
-                      selected ? 'border-purple-500' : 'border-transparent'
-                    }`}
-                    style={{ width: ITEM_WIDTH, aspectRatio: 1, backgroundColor: '#e5e7eb' }}
+                    className={`rounded-xl overflow-hidden border-[2px] ${selected ? 'border-purple3' : 'border-transparent'} bg-gray-200`}
+                    style={{ aspectRatio: 1 }}
                   >
-                    <Image source={{ uri: item.uri }} className="w-full h-full" />
+                    <Image source={{ uri: item }} className="w-full h-full" resizeMode="cover" />
                   </View>
                 </Pressable>
               );
@@ -201,25 +241,41 @@ export default function CapsulePicturePage() {
         </View>
       </Animated.View>
 
-      {/* 플로팅 버튼 (바텀시트가 닫힌 상태에서만 표시) */}
+      {/* Floating 버튼 */}
       {!isExpanded && (
-        <View
-          className="absolute flex-row justify-between left-5 right-5"
-          style={{ bottom: insets.bottom + 24 }}
-        >
+        <View className="absolute flex-row justify-between items-center left-5 right-5" style={{ bottom: insets.bottom + 24 }}>
           <Pressable
-            onPress={() =>
-              Animated.spring(translateY, { toValue: EXPANDED_Y, useNativeDriver: false }).start()
-            }
+            onPress={() => {
+              setIsExpanded(true);
+              Animated.spring(translateY, { toValue: EXPANDED_Y, useNativeDriver: false }).start();
+            }}
           >
-            <View className="flex-row items-center px-4 py-2 rounded-full bg-white shadow">
-              <SquaresFour size={20} weight="fill" color="#000" className="mr-2" />
+            <View
+              className="flex-row items-center px-4 py-2 rounded-full bg-white"
+              style={{
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 6,
+                elevation: 6,
+              }}
+            >
+              <SquaresFour size={20} weight="fill" color="#000" style={{ marginRight: 8 }} />
               <Text className="text-base text-gray-800">전체</Text>
             </View>
           </Pressable>
 
-          <Pressable onPress={() => {}}>
-            <View className="w-12 h-12 rounded-full bg-white items-center justify-center shadow">
+          <Pressable onPress={openSystemGallery}>
+            <View
+              className="w-12 h-12 rounded-full bg-white items-center justify-center"
+              style={{
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 6,
+                elevation: 6,
+              }}
+            >
               <DotsThree size={24} color="#000" />
             </View>
           </Pressable>
