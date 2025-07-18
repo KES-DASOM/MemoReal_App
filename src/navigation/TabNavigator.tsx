@@ -1,8 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyPage from '../screens/MyPage';
 import CapsuleStackNavigator from './CapsuleStackNavigator';
 import MainStackNavigator from './MainStackNavigator';
+import MypageStackNavigator from './MyPageStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,7 +32,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="MyPage"
-        component={MyPage}
+        component={MypageStackNavigator}
         options={{
           tabBarLabel: 'MyPage',
         }}

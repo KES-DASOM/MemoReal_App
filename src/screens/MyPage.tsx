@@ -4,6 +4,10 @@ import { GearIcon } from 'phosphor-react-native';
 import MypageTabButton from '../components/UI/MypageTabButton';
 import MypageCapsuleList from '../components/layout/MypageCapsuleList';
 import useMypageTabStore from '../store/useMypageTabStore';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MypageStackParamList } from '../store/types';
+
+type Props = NativeStackScreenProps<MypageStackParamList, 'MyPage'>;
 
 const createdCapsules = [
   { id: '1', date: '2023.01.15', title: '작성한 제목 첫번째 캡슐' },
@@ -20,7 +24,7 @@ const giftedCapsules = [
   { id: '6', date: '2023.01.15', title: '선물받은 캡슐 A' },
 ];
 
-export default function MyPage() {
+const MyPage: React.FC<Props> = ({ navigation }) => {
 
   const { activeTab, setActiveTab } = useMypageTabStore();
 
@@ -70,7 +74,7 @@ export default function MyPage() {
             <Text className="text-xs text-[#B3B3B3]">로그아웃</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('MypageSettingPage')}>
           <View className="w-6 h-6 items-center justify-center">
             <GearIcon size={24} color="#5E5E5E" weight="fill" />
           </View>
@@ -105,4 +109,6 @@ export default function MyPage() {
 
     </ScrollView>
   );
-}
+};
+
+export default MyPage;
