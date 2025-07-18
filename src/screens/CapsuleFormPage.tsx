@@ -36,7 +36,7 @@ export default function CapsuleFormPage() {
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const { coords, isLoadingLocation, handleGetLocation } = useCurrentCoords();
+  const { coords, isLoadingLocation, getLocation } = useCurrentCoords();
   const [address, setAddress] = useState<string | null>(null);
   const [isFetchingAddress, setIsFetchingAddress] = useState(false);
   const [rnCoords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
@@ -47,7 +47,7 @@ export default function CapsuleFormPage() {
   };
 
   const handleGetCurrentAddress = async () => {
-    const newCoords: { latitude: number; longitude: number } | null = await handleGetLocation();
+    const newCoords: { latitude: number; longitude: number } | null = await getLocation();
 
     if (newCoords) {
       setCoords(newCoords);

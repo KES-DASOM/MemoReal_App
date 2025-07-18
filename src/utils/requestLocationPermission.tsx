@@ -1,6 +1,10 @@
 import { PermissionsAndroid, Platform, Alert, Linking } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
+function showAlert(title: string, message?: string, buttons?: any[]) {
+  Alert.alert(title, message, buttons);
+}
+
 export async function requestLocationPermission(): Promise<boolean> {
   if (Platform.OS === 'ios') {
     const auth = await Geolocation.requestAuthorization('whenInUse');
@@ -25,24 +29,23 @@ export async function requestLocationPermission(): Promise<boolean> {
       }
 
       if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-        Alert.alert(
-          '위치 권한이 차단됨',
+        showAlert('위치 권한이 차단됨',
           '앱 설정에서 위치 권한을 수동으로 허용해주세요.',
           [
             {
               text: '설정으로 이동',
               onPress: () => {
                 Linking.openSettings().catch(() => {
-                  Alert.alert('오류', '설정을 열 수 없습니다.');
+                  showAlert('오류','설정을 열 수 없습니다.');
                 });
               },
             },
             { text: '취소', style: 'cancel' },
-          ]
-        );
+          ]);
       }
 
       return false;
+
     } catch (err) {
       console.warn('권한 요청 중 오류', err);
       return false;

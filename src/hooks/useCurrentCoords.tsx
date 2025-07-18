@@ -3,17 +3,13 @@ import { useState } from 'react';
 import { Alert, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { requestLocationPermission } from '../utils/requestLocationPermission';
-
-type Coords = {
-  latitude: number;
-  longitude: number;
-};
+import type { Coords } from '../store/types';
 
 export function useCurrentCoords() {
   const [coords, setCoords] = useState<Coords | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
-  const handleGetLocation = async (): Promise<Coords | null> => {
+  const getLocation = async (): Promise<Coords | null> => {
     setIsLoadingLocation(true);
 
     const hasPermission = await requestLocationPermission();
@@ -47,5 +43,5 @@ export function useCurrentCoords() {
     });
   };
 
-  return { coords, isLoadingLocation, handleGetLocation };
+  return { coords, isLoadingLocation, getLocation };
 }
