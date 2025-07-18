@@ -2024,13 +2024,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-camera-roll/camera-roll@npm:^7.10.1":
-  version: 7.10.1
-  resolution: "@react-native-camera-roll/camera-roll@npm:7.10.1"
-  peerDependencies:
-    react-native: ">=0.59"
-  checksum: 10c0/96fb8e1135c330f187a8a0e20b9a5a0d9aa3f29865a2d5c3a9123f3d639e53063ba081c282ab22ffa2c2744c0fd89bf1713e6e33f2b5e975fade4eb032408249
-
 "@react-native-async-storage/async-storage@npm:^2.2.0":
   version: 2.2.0
   resolution: "@react-native-async-storage/async-storage@npm:2.2.0"
@@ -2039,6 +2032,15 @@ __metadata:
   peerDependencies:
     react-native: ^0.0.0-0 || >=0.65 <1.0
   checksum: 10c0/84900eba46a40225c4ac9bf5eb58885200dc1e789d873ecda46a2a213870cc7110536ed1fd7a74b873071f3603c093958fbd84c635d6f6d4f94bfbb616ffa0ef
+  languageName: node
+  linkType: hard
+
+"@react-native-camera-roll/camera-roll@npm:^7.10.1":
+  version: 7.10.1
+  resolution: "@react-native-camera-roll/camera-roll@npm:7.10.1"
+  peerDependencies:
+    react-native: ">=0.59"
+  checksum: 10c0/96fb8e1135c330f187a8a0e20b9a5a0d9aa3f29865a2d5c3a9123f3d639e53063ba081c282ab22ffa2c2744c0fd89bf1713e6e33f2b5e975fade4eb032408249
   languageName: node
   linkType: hard
 
@@ -7085,12 +7087,9 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
-<<<<<<< HEAD
-=======
-    "@react-native-camera-roll/camera-roll": "npm:^7.10.1"
->>>>>>> 490ef359c98ae927c24bff4a32f74e880cfed638
     "@gorhom/bottom-sheet": "npm:^5.1.6"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
+    "@react-native-camera-roll/camera-roll": "npm:^7.10.1"
     "@react-native-community/cli": "npm:18.0.0"
     "@react-native-community/cli-platform-android": "npm:18.0.0"
     "@react-native-community/cli-platform-ios": "npm:18.0.0"
@@ -8543,7 +8542,7 @@ __metadata:
   checksum: 10c0/cd41bf28e9f468173f1e5e768685128ebf8bbf9077710e43b63482c1a76f37bff8ab3d1d6adfd7b4d54e648672356c02bea46c47cdbdb1844ebe5c5caf720114
   languageName: node
   linkType: hard
-  
+
 "react-native-permissions@npm:^5.4.1":
   version: 5.4.1
   resolution: "react-native-permissions@npm:5.4.1"
@@ -8593,7 +8592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^5.5.1":
+"react-native-safe-area-context@npm:^5.5.2":
   version: 5.5.2
   resolution: "react-native-safe-area-context@npm:5.5.2"
   peerDependencies:

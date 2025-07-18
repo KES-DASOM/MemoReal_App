@@ -1,10 +1,5 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-<<<<<<< HEAD
-=======
-
-import MyPage from '../screens/MyPage';
->>>>>>> 490ef359c98ae927c24bff4a32f74e880cfed638
 import CapsuleStackNavigator from './CapsuleStackNavigator';
 import MainStackNavigator from './MainStackNavigator';
 import MypageStackNavigator from './MyPageStackNavigator';
