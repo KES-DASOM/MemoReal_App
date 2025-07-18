@@ -13,7 +13,7 @@ interface TimeCapsuleCardProps {
 
 const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ item }) => {
   return(
-    <TouchableOpacity className="w-[48%] rounded-3xl h-fit shadow-md shadow-black/100 bg-white mb-4">
+    <TouchableOpacity className="w-36 rounded-3xl h-fit shadow-md shadow-black/100 bg-white mb-4">
       <View className="rounded-t-3xl bg-gray-400 h-28 mb-2 relative">
         <View className="absolute bottom-1 left-1 px-1">
           <Text className="text-[8px]">오픈일</Text>

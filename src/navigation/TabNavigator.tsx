@@ -1,9 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import MyPage from '../screens/MyPage';
 import CapsuleStackNavigator from './CapsuleStackNavigator';
 import MainStackNavigator from './MainStackNavigator';
+import MypageStackNavigator from './MyPageStackNavigator';
 
 import NavTabCentralButton from '../components/UI/NavTapCentralButton';
 import NavTabIcon from '../components/UI/NavTapIcon';
@@ -70,7 +69,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="MyPage"
-        component={MyPage}
+        component={MypageStackNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
             <NavTabIcon

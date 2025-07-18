@@ -13,6 +13,11 @@ export type MainStackParamList = {
   MainInfoPage: undefined;
 };
 
+export type MyPageStackParamList ={
+  MyPage: undefined;
+  MyPageSettingPage: undefined;
+};
+
 export type HomeTabParamList = {
   Home: undefined;
   Capsule: undefined;
