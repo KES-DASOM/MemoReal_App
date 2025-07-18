@@ -9,7 +9,7 @@ const StyledImage = styled(Image);
 
 const NavTabIcon: React.FC<NavTabIconProps> = ({ focused, iconOutline, iconFilled, label }) => {
   return (
-    <StyledView className="mt-3 items-center justify-center w-20">
+    <StyledView className="mt-5 items-center justify-center w-20">
       <StyledImage
         source={focused ? iconFilled : iconOutline}
         className="w-6 h-6"

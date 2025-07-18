@@ -1,7 +1,5 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View } from 'react-native';
-import { styled } from 'nativewind';
 
 import MyPage from '../screens/MyPage';
 import CapsuleStackNavigator from './CapsuleStackNavigator';
@@ -18,9 +16,9 @@ const CapsuleOutlineIcon = require('../assets/images/nav-capsule-outline.png');
 const CapsuleFilledIcon = require('../assets/images/nav-capsule-filled.png');
 
 import { HomeTabParamList } from '../store/types';
+import NavTapBackground from '../components/UI/NavTapBackground';
 
 const Tab = createBottomTabNavigator<HomeTabParamList>();
-const StyledView = styled(View);
 
 export default function TabNavigator() {
   return (
@@ -36,17 +34,10 @@ export default function TabNavigator() {
           height: 70,
           backgroundColor: 'transparent',
           borderTopWidth: 0,
-          elevation: 0,
+          elevation: 16,
         },
         tabBarBackground: () => (
-          <StyledView
-            className="flex-1 bg-white rounded-t-xl shadow-2xl shadow-black/100"
-            style={{
-              shadowOffset: { width: 0, height: -2 },
-              shadowRadius: 5,
-              elevation: 8,
-            }}
-          />
+          <NavTapBackground />
         ),
       }}
     >
