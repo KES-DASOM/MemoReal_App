@@ -199,7 +199,7 @@ export default function CapsuleFormPage() {
                           <View className="flex-row items-center">
                             <Text className="w-[80px] text-black font-bold">위치</Text>
 
-                            {!address && (
+                            {!address && !isFetchingAddress && (
                               <Pressable onPress={handleGetCurrentAddress}>
                                 <Text className="text-gray-400 underline">지도에서 찾기</Text>
                               </Pressable>
@@ -209,7 +209,7 @@ export default function CapsuleFormPage() {
                           )}
 
                           {address && (
-                            <Text className="text-black font-semibold">{address}</Text>
+                            <Text className="text-gray-600">{address}</Text>
                           )}
                           </View>
                         </View>
