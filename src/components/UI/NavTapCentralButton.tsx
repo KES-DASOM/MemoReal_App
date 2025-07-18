@@ -9,7 +9,7 @@ const StyledImage = styled(Image);
 const NavTabCentralButton: React.FC<NavTabIconProps> = ({ focused, iconOutline, iconFilled }) => {
   return (
     <StyledView
-      className="self-center absolute -bottom-1/2 items-center justify-center w-20 h-20 rounded-full bg-[#60227C] shadow-lg shadow-[#60227C]/100 elevation-10"
+      className="self-center absolute -bottom-1/2 items-center justify-center w-20 h-20 rounded-full bg-purple3 shadow-lg shadow-purple3/100 elevation-10"
       style={{
         shadowOffset: { width: 0, height: 5 },
         shadowRadius: 10,

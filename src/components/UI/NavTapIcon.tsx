@@ -14,7 +14,7 @@ const NavTabIcon: React.FC<NavTabIconProps> = ({ focused, iconOutline, iconFille
         source={focused ? iconFilled : iconOutline}
         className="w-6 h-6"
       />
-      <StyledText className={`text-xs text-[#AD88C6] ${focused ? 'opacity-100' : 'opacity-0'}`}>
+      <StyledText className={`text-xs text-purple1 ${focused ? 'opacity-100' : 'opacity-0'}`}>
         {label}
       </StyledText>
     </StyledView>
