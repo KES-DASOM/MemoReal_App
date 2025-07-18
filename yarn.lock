@@ -1538,40 +1538,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:^5.1.6":
-  version: 5.1.6
-  resolution: "@gorhom/bottom-sheet@npm:5.1.6"
-  dependencies:
-    "@gorhom/portal": "npm:1.0.14"
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    "@types/react": "*"
-    "@types/react-native": "*"
-    react: "*"
-    react-native: "*"
-    react-native-gesture-handler: ">=2.16.1"
-    react-native-reanimated: ">=3.16.0"
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-native":
-      optional: true
-  checksum: 10c0/2f5c7e4e0a8968a567f5dcac5553b85e09850be46755bcf10a6e44843705392dd71c701b551575d8ea7c6cda8678f4a04851e926b6bfa63e82198b88568a76d8
-  languageName: node
-  linkType: hard
-
-"@gorhom/portal@npm:1.0.14":
-  version: 1.0.14
-  resolution: "@gorhom/portal@npm:1.0.14"
-  dependencies:
-    nanoid: "npm:^3.3.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/86f33afc2ac2656a86a6f3fd1e41565419839576ede2c38333434a93a0a2fe4fb6fc18ab3360579427f2a1fc3b4564b933cc5ae1793a7e2825c93860a00b215f
-  languageName: node
-  linkType: hard
-
 "@hapi/hoek@npm:^9.0.0, @hapi/hoek@npm:^9.3.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
@@ -2024,6 +1990,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-async-storage/async-storage@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@react-native-async-storage/async-storage@npm:2.2.0"
+  dependencies:
+    merge-options: "npm:^3.0.4"
+  peerDependencies:
+    react-native: ^0.0.0-0 || >=0.65 <1.0
+  checksum: 10c0/84900eba46a40225c4ac9bf5eb58885200dc1e789d873ecda46a2a213870cc7110536ed1fd7a74b873071f3603c093958fbd84c635d6f6d4f94bfbb616ffa0ef
+  languageName: node
+  linkType: hard
+
 "@react-native-community/cli-clean@npm:18.0.0":
   version: 18.0.0
   resolution: "@react-native-community/cli-clean@npm:18.0.0"
@@ -2228,6 +2205,18 @@ __metadata:
     react: ">=16"
     react-native: ">=0.57"
   checksum: 10c0/4ec84b7af2ded49dc21f17cc723a0ef341076cbe40cf758dd2daff8734bea63ba83e2fee7e63958984385314b8915b6804135997e07697abdd4141217c847fe9
+  languageName: node
+  linkType: hard
+
+"@react-native-seoul/kakao-login@npm:^5.4.1":
+  version: 5.4.1
+  resolution: "@react-native-seoul/kakao-login@npm:5.4.1"
+  dependencies:
+    dooboolab-welcome: "npm:^1.3.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/05e69ba6f31195cc963be258bbcb5b410d85d03bd7d61ed7596736bb3eec0956444a7b2934a4c5f23e39ce1ff1b66eda7d0025e0a994ee77c832afab5ea1e8fb
   languageName: node
   linkType: hard
 
@@ -4407,6 +4396,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dooboolab-welcome@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "dooboolab-welcome@npm:1.3.2"
+  bin:
+    dooboolab-welcome: bin/hello.js
+  checksum: 10c0/79914ca018bffbfb80862e872ababda9b39add38821c97df95da0bc2d975084a91dcaf4bbbe040cb2d2fb38b779281474cbbb8c6363e149e69bd66e9806bbeee
+  languageName: node
+  linkType: hard
+
 "dunder-proto@npm:^1.0.0, dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -4432,10 +4430,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.173":
-  version: 1.5.183
-  resolution: "electron-to-chromium@npm:1.5.183"
-  checksum: 10c0/052cb9d53ff84451ad719a9f6c8c50a66a9128623288b84a389e270a863819ce00b437716294370e28907c461604b0b3d738f1e4a92535bca0f9351b0a8e2180
+"electron-to-chromium@npm:^1.5.185":
+  version: 1.5.185
+  resolution: "electron-to-chromium@npm:1.5.185"
+  checksum: 10c0/26820527fc85f64798ec21fcd32d3607efdf4567b701da749bbd1dd407a162373bf18733d7f0b12c56ae71ece721073b45beeba82b7d2692c494fb4b5636c4a8
   languageName: node
   linkType: hard
 
@@ -5972,6 +5970,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-plain-obj@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "is-plain-obj@npm:2.1.0"
+  checksum: 10c0/e5c9814cdaa627a9ad0a0964ded0e0491bfd9ace405c49a5d63c88b30a162f1512c069d5b80997893c4d0181eadc3fed02b4ab4b81059aba5620bfcdfdeb9c53
+  languageName: node
+  linkType: hard
+
 "is-regex@npm:^1.2.1":
   version: 1.2.1
   resolution: "is-regex@npm:1.2.1"
@@ -7032,12 +7037,13 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
-    "@gorhom/bottom-sheet": "npm:^5.1.6"
+    "@react-native-async-storage/async-storage": "npm:^2.2.0"
     "@react-native-community/cli": "npm:18.0.0"
     "@react-native-community/cli-platform-android": "npm:18.0.0"
     "@react-native-community/cli-platform-ios": "npm:18.0.0"
     "@react-native-community/datetimepicker": "npm:^8.4.2"
     "@react-native-masked-view/masked-view": "npm:^0.3.2"
+    "@react-native-seoul/kakao-login": "npm:^5.4.1"
     "@react-native/babel-preset": "npm:0.79.3"
     "@react-native/eslint-config": "npm:0.79.3"
     "@react-native/gradle-plugin": "npm:0.79.3"
@@ -7074,6 +7080,15 @@ __metadata:
     zustand: "npm:^5.0.5"
   languageName: unknown
   linkType: soft
+
+"merge-options@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "merge-options@npm:3.0.4"
+  dependencies:
+    is-plain-obj: "npm:^2.1.0"
+  checksum: 10c0/02b5891ceef09b0b497b5a0154c37a71784e68ed71b14748f6fd4258ffd3fe4ecd5cb0fd6f7cae3954fd11e7686c5cb64486daffa63c2793bbe8b614b61c7055
+  languageName: node
+  linkType: hard
 
 "merge-stream@npm:^2.0.0":
   version: 2.0.0
@@ -7509,7 +7524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.1, nanoid@npm:^3.3.11":
+"nanoid@npm:^3.3.11":
   version: 3.3.11
   resolution: "nanoid@npm:3.3.11"
   bin:
@@ -8024,9 +8039,9 @@ __metadata:
   linkType: hard
 
 "picomatch@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "picomatch@npm:4.0.2"
-  checksum: 10c0/7c51f3ad2bb42c776f49ebf964c644958158be30d0a510efd5a395e8d49cb5acfed5b82c0c5b365523ce18e6ab85013c9ebe574f60305892ec3fa8eee8304ccc
+  version: 4.0.3
+  resolution: "picomatch@npm:4.0.3"
+  checksum: 10c0/9582c951e95eebee5434f59e426cddd228a7b97a0161a375aed4be244bd3fe8e3a31b846808ea14ef2c8a2527a6eeab7b3946a67d5979e81694654f939473ae2
   languageName: node
   linkType: hard
 
