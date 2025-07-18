@@ -15,7 +15,7 @@ const TimeCapsuleSheet: React.FC<TimeCapsuleSheetProps> = ({ initialTop }) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const correctedSnapPoints = useMemo(() => [
-    `${(100 - (initialTop / SCREEN_HEIGHT) * 100)}%`,
+    `${Math.round(100 - (initialTop / SCREEN_HEIGHT) * 100)}%`,
     '85%',
   ], [initialTop]);
 
@@ -32,15 +32,16 @@ const TimeCapsuleSheet: React.FC<TimeCapsuleSheetProps> = ({ initialTop }) => {
         elevation: 12,
        }}
     >
-      <View className="flex-1 mt-3 mx-7">
-        <View className="flex-row justify-between">
+      <View className="flex-1 mt-3">
+        <View className="flex-row justify-between ml-7">
           <Text className="font-bold text-[16px] mb-4 text-center">타임캡슐 찾아보기</Text>
         </View>
         <BottomSheetFlatList
           data={capsules}
           keyExtractor={(item) => item.id}
           numColumns={2}
-          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          indicatorStyle={false}
+          columnWrapperStyle={{ justifyContent: 'space-between', marginHorizontal: 50 }}
           className="mx-9"
           renderItem={({ item }) => (
             <TimeCapsuleCard item={item} />
