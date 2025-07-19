@@ -1,6 +1,5 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CapsuleIndexPage from '../screens/CapsuleIndexPage';
 import CapsuleMainPage from '../screens/CapsuleMainPage';
 import CapsulePicturePage from '../screens/CapsulePicturePage';
 import CapsuleFormPage from '../screens/CapsuleFormPage';
@@ -15,8 +14,7 @@ export default function CapsuleStackNavigator() {
       screenOptions={{
       headerShown: false,
     }}
-      initialRouteName="CapsuleIndexPage">
-      <Stack.Screen name="CapsuleIndexPage" component={CapsuleIndexPage} />
+      initialRouteName="CapsuleMainPage">
       <Stack.Screen name="CapsuleMainPage" component={CapsuleMainPage} />
       <Stack.Screen name="CapsulePicturePage" component={CapsulePicturePage} />
       <Stack.Screen name="CapsuleFormPage" component={CapsuleFormPage} />
