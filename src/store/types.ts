@@ -4,7 +4,9 @@ export type CapsuleStackParamList = {
   CapsuleIndexPage: undefined;
   CapsuleMainPage: undefined;
   CapsulePicturePage: undefined;
-  CapsuleFormPage: undefined;
+  CapsuleFormPage: {
+    imageUris: string[];
+  };
   CapsuleUploadPage: undefined;
 };
 
