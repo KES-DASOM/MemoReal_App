@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import CapsuleStackNavigator from './CapsuleStackNavigator';
 import MainStackNavigator from './MainStackNavigator';
 import MypageStackNavigator from './MyPageStackNavigator';
@@ -22,23 +23,31 @@ const Tab = createBottomTabNavigator<HomeTabParamList>();
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: {
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 70,
-          backgroundColor: 'transparent',
-          borderTopWidth: 0,
-          elevation: 16,
-        },
+        tabBarStyle: ((currentRoute) => {
+          const routeName = getFocusedRouteNameFromRoute(currentRoute) ?? 'default';
+          const hideTabRoutes = ['CapsulePicturePage', 'CapsuleFormPage', 'CapsuleUploadPage'];
+          if (hideTabRoutes.includes(routeName)) {
+            return { display: 'none' };
+          }
+
+          return {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 70,
+            backgroundColor: 'transparent',
+            borderTopWidth: 0,
+            elevation: 16,
+          };
+        })(route),
         tabBarBackground: () => (
           <NavTapBackground />
         ),
-      }}
+      })}
     >
       <Tab.Screen
         name="Home"
