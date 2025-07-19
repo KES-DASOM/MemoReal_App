@@ -15,13 +15,19 @@ import { CaretLeft } from 'phosphor-react-native';
 import CustomButton from '../components/UI/CustomButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { CapsuleStackParamList } from '../store/types';
 
 import { useCurrentCoords } from '../hooks/useCurrentCoords';
 import { getAddressFromCoords } from '../utils/getAdressFromCoords';
 
+type CapsuleFormPageRouteProp = RouteProp<CapsuleStackParamList, 'CapsuleFormPage'>;
+
 export default function CapsuleFormPage() {
+  const route = useRoute<CapsuleFormPageRouteProp>();
+  const { imageUris = [] } = route.params ?? {};
+
   const [CapsuleOpenVisible, setCapsuleOpenVisible] = useState(false);
 
   const [OpenAtDate, setOpenAtDate] = useState(new Date());
@@ -34,7 +40,7 @@ export default function CapsuleFormPage() {
   const [CapsuleDescribe, setCapsuleDescribe] = useState('');
   const [selectedType, setSelectedType] = useState<'normal' | 'time'>('normal');
 
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<CapsuleStackParamList>>();
 
   const { coords, isLoadingLocation, getLocation } = useCurrentCoords();
   const [address, setAddress] = useState<string | null>(null);
@@ -91,9 +97,14 @@ export default function CapsuleFormPage() {
         <View className='flex-1 items-start px-[20px] space-y-[10px]'>
           <View className="w-screen px-[20px] pb-[24px] border-b border-gray-400 self-center">
             <View className="flex-row">
-              <View className="w-[80px] h-[80px] rounded-xl bg-gray-300 mr-[12px]" />
-              <View className="w-[80px] h-[80px] rounded-xl bg-gray-300 mr-[12px]" />
-              <View className="w-[80px] h-[80px] rounded-xl bg-gray-300" />
+              {imageUris.slice(0, 3).map((uri: string, index: number) => (
+                <Image
+                  key={index}
+                  source={{ uri }}
+                  className="w-[80px] h-[80px] rounded-xl mr-[12px]"
+                  resizeMode="cover"
+                />  
+              ))}
             </View>
           </View>
 
