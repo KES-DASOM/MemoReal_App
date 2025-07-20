@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { GearIcon } from 'phosphor-react-native';
 import MypageTabButton from '../components/UI/MypageTabButton';
 import useMypageTabStore from '../store/useMypageTabStore';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MyPageStackParamList } from '../store/types';
 import MypageActionSection from '../components/layout/MypageActionSection';
+import { useProfileStroe } from '../store/useProfileStore';
 
 type Props = NativeStackScreenProps<MyPageStackParamList, 'MyPage'>;
 
@@ -25,6 +26,7 @@ const giftedCapsules = [
 ];
 
 const MyPage: React.FC<Props> = ({ navigation }) => {
+  const {nickname, imageUrl} = useProfileStroe()
 
   const { activeTab, setActiveTab } = useMypageTabStore();
 
@@ -65,8 +67,8 @@ const MyPage: React.FC<Props> = ({ navigation }) => {
 
       <View className="flex-row items-center justify-between bg-white rounded-2xl shadow-md shadow-black/100 mx-7 px-4 py-2 mb-6">
         <View className="flex-row items-center space-x-3">
-          <View className="w-16 h-16 border border-[#60227C] rounded-full bg-gray-300" />
-          <Text className="text-base font-medium">할일외면하기</Text>
+          <Image src={imageUrl} className="w-16 h-16 border border-[#60227C] rounded-full bg-gray-300" />
+          <Text className="text-base font-medium">{nickname}</Text>
           <TouchableOpacity>
             <Text className="text-xs text-[#B3B3B3]">로그아웃</Text>
           </TouchableOpacity>
