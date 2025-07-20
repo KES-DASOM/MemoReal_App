@@ -139,7 +139,7 @@ export default function CapsuleFormPage() {
             onRequestClose={() => setCapsuleOpenVisible(false)}
           >
             <TouchableWithoutFeedback onPress={() => setCapsuleOpenVisible(false)}>
-              <View className="flex-1 justify-end bg-transparent">
+              <View className="flex-1 justify-end bg-transparent mb-20">
                 <TouchableWithoutFeedback onPress={() => null}>
                   <View className="w-screen relative rounded-t-2xl" style={{ height: '60%' }}>
                     <LinearGradient
