@@ -103,7 +103,7 @@ export default function CapsuleFormPage() {
                   source={{ uri }}
                   className="w-[80px] h-[80px] rounded-xl mr-[12px]"
                   resizeMode="cover"
-                />  
+                />
               ))}
             </View>
           </View>
@@ -177,7 +177,7 @@ export default function CapsuleFormPage() {
                               <Text
                                 className={`${
                                   selectedType === 'normal'
-                                    ? 'text-purple3 font-semibold'
+                                    ? 'text-purple3 font-bold'
                                     : 'text-gray-400'
                                 }`}
                               >
@@ -201,7 +201,7 @@ export default function CapsuleFormPage() {
                               <Text
                                 className={`${
                                   selectedType === 'time'
-                                    ? 'text-purple3 font-semibold'
+                                    ? 'text-purple3 font-bold'
                                     : 'text-gray-400'
                                 }`}
                               >

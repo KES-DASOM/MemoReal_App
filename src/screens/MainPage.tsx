@@ -25,7 +25,7 @@ const MainPage: React.FC<Props> = ({ navigation }) => {
       {/* 상단 날짜 및 알림 */}
       <View className="flex-row justify-between items-center mb-4 mx-7">
         <View>
-          <Text className="text-sm font-semibold text-black">메모리얼에서 추억을 보관한 지</Text>
+          <Text className="text-sm font-bold text-black">메모리얼에서 추억을 보관한 지</Text>
           <View className="flex-row items-center">
             {digits.map((digit, index) => (
               <View
@@ -35,7 +35,7 @@ const MainPage: React.FC<Props> = ({ navigation }) => {
                 <Text className="text-[#60227C] font-bold">{digit}</Text>
               </View>
             ))}
-            <Text className="ml-1 text-sm font-semibold text-black">일 째</Text>
+            <Text className="ml-1 text-sm font-bold text-black">일 째</Text>
           </View>
         </View>
         <TouchableOpacity onPress={()=>{console.log('Bell 누름');}} >
@@ -82,7 +82,7 @@ const MainPage: React.FC<Props> = ({ navigation }) => {
         end={{ x: 1, y: 0 }}
         className="items-center justify-center mx-7 px-1 py-1 rounded-full">
         <View className="flex-row border border-white w-full rounded-full py-2.5 items-center justify-center">
-          <Text className="text-white font-semibold text-center mr-2">
+          <Text className="text-white font-bold text-center mr-2">
             메모리얼 알아보기
           </Text>
           <CaretDoubleRightIcon size={20} color="#ffffff" weight="bold" />
