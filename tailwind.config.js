@@ -3,7 +3,7 @@ module.exports = {
   content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      colors:{
+      colors: {
         purple1: '#AD88C6',
         purple2: '#7469B6',
         purple3: '#60227C',
@@ -13,6 +13,12 @@ module.exports = {
         grey3: '#5E5E5E',
         grey4: '#E6E6E6',
         grey5: '#9DB2CE',
+      },
+      fontFamily: {
+        'mainFont-regular': ['NotoSansKR-Regular'],
+        'mainFont-medium': ['NotoSansKR-Medium'],
+        'mainFont-Bold': ['NotoSansKR-Bold'],
+        subFont: ['FreesentationVF'],
       },
     },
   },
