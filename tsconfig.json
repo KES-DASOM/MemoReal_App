@@ -10,6 +10,8 @@
     "skipLibCheck": true,
     "noEmit": true,
     "resolveJsonModule": true,
+    "allowJs": true,
+    "noImplicitAny": false,
     "types": ["react", "react-native", "nativewind/types"]
   },
   "include": ["**/*.ts", "**/*.tsx", "app.d.ts"],
