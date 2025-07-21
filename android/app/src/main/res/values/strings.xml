@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">memoreal</string>
     <string name="kakao_app_key">554ea0ca3980443cd009dee6dab1ec00</string>
+    <string name="game_view_content_description">Game view</string>
 </resources>
