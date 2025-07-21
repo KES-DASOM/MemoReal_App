@@ -4,7 +4,7 @@ import * as Progress from 'react-native-progress';
 
 export default function CapsuleUploadPage() {
   const [pct, setPct] = useState(0.2);
-  
+
   useEffect(() => {
     // 1초(1000ms)마다 실행
     const id = setInterval(() => {
@@ -21,28 +21,29 @@ export default function CapsuleUploadPage() {
 
 
   return (
-    <View className='flex-1 bg-white px-4 justify-between'>
-          <View>
-            <Text className="text-2xl mb-5 text-center">업로드</Text>
+    <View className="flex-1 bg-white px-4 justify-between">
+      <View>
+        <Text className="text-2xl mb-5 text-center">업로드</Text>
 
-            {/* AR 삽입 예정 */}
-            <Image
-              source={require('../assets/images/logo.png')}
-              className="w-[78px] h-[78px] self-center"
-            />
-            
-          </View>
-          <Progress.Bar           // ▮ 막대(bar) 형태
-            progress={pct}        // 0 ~ 1 사이
-            width={null}          // 전체 폭(flex)
-            height={12}
-            borderRadius={8}
-            indeterminate={false} // true면 로딩 스피너 모드
-            animated              // 값 변할 때 부드럽게
-            color="#60227C"
-            className='mb-[50px]'
-            />
+        {/* AR 삽입 예정 */}
+        <Image
+          source={require('../assets/images/logo.png')}
+          className="w-[78px] h-[78px] self-center"
+        />
 
-        </View>
+      </View>
+      {/*
+      <Progress.Bar // ▮ 막대(bar) 형태
+        progress={pct} // 0 ~ 1 사이
+        width={null} // 전체 폭(flex)
+        height={12}
+        borderRadius={8}
+        indeterminate={false} // true면 로딩 스피너 모드
+        animated // 값 변할 때 부드럽게
+        color="#60227C"
+        className="mb-[50px]"
+      />
+       */}
+    </View>
   );
 }

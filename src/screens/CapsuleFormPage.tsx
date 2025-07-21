@@ -103,7 +103,7 @@ export default function CapsuleFormPage() {
                   source={{ uri }}
                   className="w-[80px] h-[80px] rounded-xl mr-[12px]"
                   resizeMode="cover"
-                />  
+                />
               ))}
             </View>
           </View>
@@ -139,7 +139,7 @@ export default function CapsuleFormPage() {
             onRequestClose={() => setCapsuleOpenVisible(false)}
           >
             <TouchableWithoutFeedback onPress={() => setCapsuleOpenVisible(false)}>
-              <View className="flex-1 justify-end bg-transparent">
+              <View className="flex-1 justify-end bg-transparent mb-20">
                 <TouchableWithoutFeedback onPress={() => null}>
                   <View className="w-screen relative rounded-t-2xl" style={{ height: '60%' }}>
                     <LinearGradient
@@ -177,7 +177,7 @@ export default function CapsuleFormPage() {
                               <Text
                                 className={`${
                                   selectedType === 'normal'
-                                    ? 'text-purple3 font-semibold'
+                                    ? 'text-purple3 font-bold'
                                     : 'text-gray-400'
                                 }`}
                               >
@@ -201,7 +201,7 @@ export default function CapsuleFormPage() {
                               <Text
                                 className={`${
                                   selectedType === 'time'
-                                    ? 'text-purple3 font-semibold'
+                                    ? 'text-purple3 font-bold'
                                     : 'text-gray-400'
                                 }`}
                               >

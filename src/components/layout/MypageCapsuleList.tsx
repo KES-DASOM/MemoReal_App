@@ -18,7 +18,7 @@ const MypageCapsuleList: React.FC<TimeCapsuleListProps> = ({ capsules, headerTex
   return (
     <View className="py-4">
       <View className="flex-row justify-between items-center mb-6">
-        <Text className="text-xs font-semibold text-gray-800">{headerText} <ColoredText>{capsules.length}</ColoredText></Text>
+        <Text className="text-xs font-bold text-gray-800">{headerText} <ColoredText>{capsules.length}</ColoredText></Text>
         <TouchableOpacity>
           <Text className="text-xs text-[#5E5E5E]">더보기</Text>
         </TouchableOpacity>

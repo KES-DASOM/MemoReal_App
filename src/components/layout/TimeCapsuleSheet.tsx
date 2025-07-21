@@ -41,8 +41,8 @@ const TimeCapsuleSheet: React.FC<TimeCapsuleSheetProps> = ({ initialTop }) => {
           keyExtractor={(item) => item.id}
           numColumns={2}
           indicatorStyle={false}
-          columnWrapperStyle={{ justifyContent: 'space-between', marginHorizontal: 50 }}
-          className="mx-9"
+          columnWrapperStyle={{ justifyContent: 'space-between', marginHorizontal: 25 }}
+          className="mx-9 mb-[400px]"
           renderItem={({ item }) => (
             <TimeCapsuleCard item={item} />
           )}

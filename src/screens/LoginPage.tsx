@@ -4,10 +4,12 @@ import { login as kakaoLogin, getProfile } from '@react-native-seoul/kakao-login
 import { useAuth } from '../hooks/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useProfileStroe } from '../store/useProfileStore';
 
 export default function LoginPage() {
   const { login } = useAuth();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const {setProfile} = useProfileStroe()
 
   // 카카오 로그인 함수
   const handleKakaoLogin = useCallback(async () => {
@@ -17,6 +19,7 @@ export default function LoginPage() {
       const profile = await getProfile();
       console.log('카카오 프로필:', profile);
       login(token.accessToken); // AuthContext에 토큰 저장 및 로그인 상태 변경
+      setProfile(profile.nickname, profile.profileImageUrl) // 유저 정보 설정
       Alert.alert('로그인 성공', '카카오 로그인에 성공했습니다.');
       navigation.reset({
         index: 0,
@@ -59,4 +62,4 @@ export default function LoginPage() {
       </TouchableOpacity>
     </View>
   );
-} 
+}
