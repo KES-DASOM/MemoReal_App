@@ -139,7 +139,7 @@ export default function CapsulePicturePage() {
         <Pressable onPress={() => navigation.goBack()}>
           <CaretLeft size={20} color="black" weight="bold" />
         </Pressable>
-        <Text className="text-base font-semibold text-black">사진/영상 선택</Text>
+        <Text className="text-base font-bold text-black">사진/영상 선택</Text>
         <Pressable onPress={goToFormPage}>
           <Text className={`text-base ${combinedSelected.length ? 'text-black' : 'text-gray-400'}`}>다음</Text>
         </Pressable>
@@ -205,13 +205,13 @@ export default function CapsulePicturePage() {
                 <X size={24} color="#6B7280" />
               </Pressable>
 
-              <Text className="text-base font-semibold text-black">선택한 이미지</Text>
+              <Text className="text-base font-bold text-black">선택한 이미지</Text>
 
               <CustomButton
                 onPress={confirmSelection}
                 disabled={!tempSelected.size}
                 className={`px-4 py-1 rounded-full ${tempSelected.size ? 'bg-purple3' : 'bg-gray-200'}`}
-                textClassName={`text-xs font-semibold ${tempSelected.size ? 'text-white' : 'text-gray-400'}`}
+                textClassName={`text-xs font-bold ${tempSelected.size ? 'text-white' : 'text-gray-400'}`}
               >
                 선택
               </CustomButton>

@@ -64,6 +64,7 @@ export default function CapsuleUploadPage() {
           />
         </View>
       </View>
+      {/*
       <Progress.Bar // ▮ 막대(bar) 형태
         progress={pct} // 0 ~ 1 사이
         width={null} // 전체 폭(flex)
@@ -74,6 +75,7 @@ export default function CapsuleUploadPage() {
         color="#60227C"
         className="mb-[50px]"
       />
+       */}
     </View>
   );
 }

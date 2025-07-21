@@ -11,6 +11,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		D275A6FC996743E397410DB6 /* FreesentationVF.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEBD1252CBA7437895F2ED81 /* FreesentationVF.ttf */; };
+		E6D9934DBB4A49D7ACE5F002 /* NotoSansKR-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 908D3984B6C94F72B3A9DAD9 /* NotoSansKR-Bold.ttf */; };
+		20441D04771C403FB237E6F2 /* NotoSansKR-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7F5854F66DD4EB98FF4570E /* NotoSansKR-Medium.ttf */; };
+		CF433344D0784E4B8F375FD1 /* NotoSansKR-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 522550A50A7443D5BBF0BCEB /* NotoSansKR-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +39,10 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = memoreal/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = memoreal/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FEBD1252CBA7437895F2ED81 /* FreesentationVF.ttf */ = {isa = PBXFileReference; name = "FreesentationVF.ttf"; path = "../src/assets/fonts/FreesentationVF.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		908D3984B6C94F72B3A9DAD9 /* NotoSansKR-Bold.ttf */ = {isa = PBXFileReference; name = "NotoSansKR-Bold.ttf"; path = "../src/assets/fonts/NotoSansKR-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E7F5854F66DD4EB98FF4570E /* NotoSansKR-Medium.ttf */ = {isa = PBXFileReference; name = "NotoSansKR-Medium.ttf"; path = "../src/assets/fonts/NotoSansKR-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		522550A50A7443D5BBF0BCEB /* NotoSansKR-Regular.ttf */ = {isa = PBXFileReference; name = "NotoSansKR-Regular.ttf"; path = "../src/assets/fonts/NotoSansKR-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +101,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				87495B9837D14C15AFF5192D /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -115,6 +124,18 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		87495B9837D14C15AFF5192D /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				FEBD1252CBA7437895F2ED81 /* FreesentationVF.ttf */,
+				908D3984B6C94F72B3A9DAD9 /* NotoSansKR-Bold.ttf */,
+				E7F5854F66DD4EB98FF4570E /* NotoSansKR-Medium.ttf */,
+				522550A50A7443D5BBF0BCEB /* NotoSansKR-Regular.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -185,6 +206,10 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				D275A6FC996743E397410DB6 /* FreesentationVF.ttf in Resources */,
+				E6D9934DBB4A49D7ACE5F002 /* NotoSansKR-Bold.ttf in Resources */,
+				20441D04771C403FB237E6F2 /* NotoSansKR-Medium.ttf in Resources */,
+				CF433344D0784E4B8F375FD1 /* NotoSansKR-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
