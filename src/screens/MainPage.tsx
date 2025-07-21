@@ -62,10 +62,10 @@ const MainPage: React.FC<Props> = ({ navigation }) => {
               className="w-[18px] h-[23px]"
             />
           </View>
-          <Text className="text-2xl font-bold text-black mb-2">${balance}</Text>
+          <Text className="text-[32px] font-bold text-black mb-2">${balance}</Text>
           <CustomButton
-            className="bg-[#60227C] py-[10px] px-[40px] rounded-full mb-2"
-            textClassName="color-white text-[16px]"
+            className="bg-[#60227C] px-[30px] rounded-full mb-2"
+            textClassName="color-white text-[14px]"
             onPress={()=>{console.log('거래내역 누름');}}
             >
             거래내역

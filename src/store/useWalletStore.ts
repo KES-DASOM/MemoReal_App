@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 interface WalletState {
   hasWallet: boolean;
-  balance: number;
+  balance: string;
   createWallet: () => void;
 }
 
@@ -12,6 +12,6 @@ export const useWalletStore = create<WalletState>((set) => ({
   createWallet: () => //임시로 일단...
     set({
       hasWallet: true,
-      balance: 1000,
+      balance: '1,008',
     }),
 }));

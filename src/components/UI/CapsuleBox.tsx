@@ -22,7 +22,7 @@ const TimeCapsuleCard: React.FC<TimeCapsuleCardProps> = ({ item }) => {
           resizeMode="cover"
         />
         <View className="absolute bottom-1 left-1 px-1">
-          <Text className="text-[8px]">오픈일</Text>
+          <Text className="text-[8px] font-bold stroke-[0.1px]">오픈일</Text>
           <Text className="text-xs font-bold">{item.date}</Text>
         </View>
       </View>
